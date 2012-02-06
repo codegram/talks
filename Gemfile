@@ -23,7 +23,6 @@ gem 'slim'
 # Coffee Script
 gem 'coffee-script'
 
-gem 'unicorn'
 gem 'thin'
 
 group :development do
