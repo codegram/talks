@@ -28,3 +28,4 @@ gem 'coffee-script'
 gem 'thin'
 
 gem 'heroku'
+gem 'unicorn'
