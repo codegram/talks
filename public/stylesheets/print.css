@@ -227,7 +227,12 @@ body a:hover {
 #content {
   width: 900px;
   margin: 20px auto;
-  font-size: 24px;
+  font-size: 20px;
+}
+#content #credits {
+  margin-top: 40px;
+  text-align: right;
+  color: #aaaaaa;
 }
 
 .centered {
@@ -241,4 +246,8 @@ img {
 em {
   background-color: #dddddd;
   padding: 4px;
+}
+
+#logo img {
+  margin-right: 20px;
 }
