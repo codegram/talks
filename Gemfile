@@ -23,9 +23,9 @@ gem 'slim'
 # Coffee Script
 gem 'coffee-script'
 
-# Use mongrel for the Web server
-# gem 'mongrel'
-gem 'thin'
-
-gem 'heroku'
 gem 'unicorn'
+
+group :development do
+  gem 'heroku'
+  gem 'foreman'
+end
