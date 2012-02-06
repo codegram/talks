@@ -347,3 +347,31 @@ body #impress .step.active {
 .slide h1 {
   margin-top: 0px;
 }
+
+.step-intro + .hint {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+}
+
+.hint {
+  position: fixed;
+  top: 10px;
+  left: 0px;
+  right: 0px;
+  background: rgba(0, 0, 0, 0.4);
+  color: white;
+  font-size: 2em;
+  text-align: center;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+  opacity: 0;
+  -moz-transition-property: opacity;
+  -webkit-transition-property: opacity;
+  -o-transition-property: opacity;
+  transition-property: opacity;
+  -moz-transition-duration: 1s;
+  -webkit-transition-duration: 1s;
+  -o-transition-duration: 1s;
+  transition-duration: 1s;
+  padding: 5px;
+  font-family: Klavika, "Helvetica Neue", Helvetica, Arial;
+}
