@@ -1,0 +1,44 @@
+//
+// Virtual Content Classes
+//
+
+.links
+  a
+    @include basic-link($link-color, $link-visited-color, $link-hover-color)
+
+.typography
+  @include basic-typography
+
+body
+  @extend .links
+  @extend .typography
+  a
+    text-decoration: none !important
+    &:hover
+      text-decoration: underline !important
+
+  color: rgba(0,0,0, 0.8)
+
+#intro
+  padding-top: 150px
+  text-align: center
+  page-break-after: always
+  h1
+    margin-top: 50px
+  h2
+    font-weight: normal
+
+#content
+  width: 900px
+  margin: 20px auto
+  font-size: 24px
+
+.centered
+  text-align: center
+
+img
+  vertical-align: middle
+
+em
+  background-color: #ddd
+  padding: 4px

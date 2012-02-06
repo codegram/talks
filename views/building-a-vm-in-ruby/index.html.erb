@@ -1,0 +1,146 @@
+<%=render partial: 'intro'%>
+
+<div class="step slide" data-x="1000" data-y="800">
+  <h1>What is a VM anyway?</h1>
+  <ul>
+    <li>A program that <span class="rotating">executes</span> other programs</li>
+    <li>Portable across platforms</li>
+    <li>Generally written in a low-level language</li>
+    <li>May be stack or register-based</li>
+  </ul>
+</div>
+
+<div class="step slide" data-x="1000" data-y="1200">
+  <h1>Stack-based vs Register-based</h1>
+  <h2>Stack-based VMs</h2>
+  <ul>
+    <li>JVM, Rubinius, most of the VMs</li>
+    <li>Easier to implement</li>
+  </ul>
+  <h2>Register-based VMs</h2>
+  <ul>
+    <li>Lua, Perl 6 (Parrot)</li>
+    <li>More similar to actual CPUs</li>
+    <li>Can be faster (less instructions to execute)</li>
+  </ul>
+</div>
+
+<div class="step slide" data-x="1000" data-y="1800">
+  <h1>VMs are (practically) language-agnostic</h1>
+  <ul>
+    <li>Language compilers target a particular VM</li>
+    <li>VM features may suit better a particular programming paradigm (OO, functional)</li>
+    <li>Own bytecode format</li>
+  </ul>
+</div>
+
+<div class="step slide" data-x="1000" data-y="2200">
+  <h1>Bytecode format</h1>
+  <ul>
+    <li>Compact representation of a program</li>
+    <li><strong>Fast</strong> to parse and read</li>
+  </ul>
+</div>
+
+<div class="step slide" data-x="2000" data-y="0">
+  <h1>Let's build our own!</h1>
+  <h3>But first, let's define what a program for our VM will look like.</h1>
+  <div style="text-align: center">
+    <img src="/images/building-a-vm-in-ruby/program.png" />
+  </div>
+  <p>Typical procedural program: many routines, one of them being the main
+  entry point.</p>
+</div>
+
+<div class="step slide" data-x="2000" data-y="600">
+  <h3>Now, what does one of these functions look like?</h1>
+  <div style="text-align: center">
+    <img src="/images/building-a-vm-in-ruby/function.png" />
+  </div>
+  <p><strong>Literals</strong> are all user-entered values (strings or fixnums)
+  used inside this function code.</p>
+  <p><strong>Locals</strong> are all local variables used in the function
+  (including the arguments passed to it).</p>
+  <p>The <strong>instructions</strong> are formed by an opcode and one
+  operand (in other VMs there may be more operands).</p>
+</div>
+
+<div class="step slide" data-x="2000" data-y="1200">
+  <h3>Instructions</h1>
+  <p>As an example, a function that adds 42 and 5 and returns the result will
+  have <strong>0 locals</strong>, its literal table will have two elements
+  (42 and 5) and its instructions will be the following:</p>
+  <pre>push_literal 0
+push_literal 1
+add
+ret</pre>
+  <p>We push literals 0 and 1 because those are indexes to the literals table
+  (the 0 is the first element and the 1 is the second).</p>
+  <p>The final "ret" is essential to every function. It tells it to return to
+  the caller the topmost value on the stack (in this case the result of adding
+  42 and 5).</p>
+</div>
+
+<div class="step slide" data-x="2000" data-y="1800">
+  <h3>Introducing MC: our bytecode format</h1>
+  <div style="text-align: center; overflow: hidden">
+    <pre style="float: left; text-align: left">_main_
+:42,5,"add"
+0.0
+0.1
+0.2
+7.2
+8
+_add_
+1.0
+1.1
+3
+8</pre>
+    <div style="float: left">
+      <h3>Instruction set</h3>
+      <ul style="float: left; text-align:left">
+        <li>0:push_literal [literal_idx]</li>
+        <li>1:push_local [local_idx]</li>
+        <li>3:add</li>
+        <li>7:call [num_args]</li>
+        <li>8:ret</li>
+      </ul>
+    </div>
+    <img src="/images/building-a-vm-in-ruby/mc.png" style="float: right; padding-top: 40px"/>
+  </div>
+  <p style="margin-top: -20px">_foo_ indicates the start of a function called "foo", and :elem,elem2,elem3
+  declares a literal table of three elements.</p>
+</div>
+
+<div class="step slide" data-x="2000" data-y="2400">
+  <h3>Execution steps</h1>
+  <ol>
+    <li>Load a program file.</li>
+    <li>Parse it and create all the functions.</li>
+    <li>Find the main function and execute it in a new call frame.</li>
+    <li>Apply each instruction to the call frame stack. If we find...
+      <ul>
+        <li>"call": We execute a function in a new call frame and wait for it
+        to return.</li>
+        <li>"ret": Return the topmost element on the stack to our caller. If
+        we've consumed all the call frames, program terminates printing the
+        returned value.</li>
+      </ul>
+    </li>
+  </ol>
+</div>
+
+<div class="step slide" data-x="2000" data-rotate="90" data-y="3400">
+  <h3>You are now aware that...</h3>
+  <h4>our newly built VM is called MicroVM.</h4>
+  <h5>Sunday afternoon. One hour. Less than 150LOC (< 4kb).</h5>
+  <pre style="font-size: 20px">$ wget https://raw.github.com/txus/microvm/master/microvm
+$ chmod +x microvm
+$ wget https://raw.github.com/txus/microvm/master/functions.mc
+$ ./microvm functions.mc</pre>
+  <p>Go check out the code!</p>
+  <a href="https://github.com/txus/microvm">https://github.com/txus/microvm</a>
+  <p>Problem? (I mean, questions?)</p>
+  <img src="http://abhimanyudubey.files.wordpress.com/2011/12/trollface.jpg" style="float:right; margin-top: -25px"/>
+  <small style="font-size: 20px">By Txus (@txustice) - <a href="http://twitter.com/txustice" target="_blank">Twitter</a>, <a href="http://github.com/txus" target="_blank">GitHub</a></small>
+</div>

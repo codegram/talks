@@ -1,0 +1,59 @@
+doctype html
+html
+  meta http-equiv="Content-Type" content="text/html;charset=UTF-8"
+  head
+    title=@title
+    link href="http://fonts.googleapis.com/css?family=Open+Sans:regular,bold,italic,italicsemibold|PT+Sans:400,700,400italic,700italic|PT+Serif:400,700,400italic,700italic" rel="stylesheet"
+    ==stylesheet_link_tag 'codegram'
+    ==stylesheet_link_tag 'print', media: 'print'
+    ==stylesheet_link_tag 'code'
+    ==stylesheet_link_tag 'code', media: 'print'
+    ==javascript_include_tag 'jquery'
+    ==javascript_include_tag 'sh/shCore'
+    ==javascript_include_tag 'sh/shAutoloader'
+    coffee:
+      $ ->
+        path = (args...) ->
+          result = []
+          for argument in args
+              result.push(argument.replace('@', '/javascripts/sh/'))
+          console.log result
+          result
+
+        SyntaxHighlighter.autoloader.apply(null, path(
+          'applescript            @shBrushAppleScript.js',
+          'actionscript3 as3      @shBrushAS3.js',
+          'bash shell             @shBrushBash.js',
+          'coldfusion cf          @shBrushColdFusion.js',
+          'cpp c                  @shBrushCpp.js',
+          'c# c-sharp csharp      @shBrushCSharp.js',
+          'css                    @shBrushCss.js',
+          'delphi pascal          @shBrushDelphi.js',
+          'diff patch pas         @shBrushDiff.js',
+          'erl erlang             @shBrushErlang.js',
+          'groovy                 @shBrushGroovy.js',
+          'java                   @shBrushJava.js',
+          'jfx javafx             @shBrushJavaFX.js',
+          'js jscript javascript  @shBrushJScript.js',
+          'perl pl                @shBrushPerl.js',
+          'php                    @shBrushPhp.js',
+          'text plain             @shBrushPlain.js',
+          'py python              @shBrushPython.js',
+          'ruby rails ror rb      @shBrushRuby.js',
+          'sass scss              @shBrushSass.js',
+          'scala                  @shBrushScala.js',
+          'sql                    @shBrushSql.js',
+          'vb vbnet               @shBrushVb.js',
+          'xml xhtml xslt html    @shBrushXml.js'
+        ))
+
+        SyntaxHighlighter.defaults['toolbar'] = false
+
+        SyntaxHighlighter.all()
+
+  body
+    -if @not_a_presentation
+      #content==yield
+    -else
+      #impress==yield
+    ==javascript_include_tag 'impress'

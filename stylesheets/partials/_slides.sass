@@ -1,0 +1,39 @@
+body
+  .step
+    // border: 1px solid rgba(0,0,0, .1)
+  #impress
+    &.impress-not-supported
+      padding: 20px
+        bottom: 0px
+      background: #f1f1f1
+      .step
+        background: #fff
+        +opacity(1)
+        border: 1px solid #ccc
+        +border-radius(5px)
+        margin:
+          bottom: 20px
+          left: auto
+          right: auto
+
+
+    .step
+      +box-sizing(border-box)
+      +opacity(0)
+      +transition(all, 1s)
+      visibility: hidden
+      &.active
+        visibility: visible
+        +opacity(1)
+        +transition(all, 1s)
+
+      overflow: hidden
+
+.slide
+  h1
+    margin-top: 0px
+  height: 700px
+  width: 900px
+  padding: 30px
+  font-size: 24px
+  line-height: 36px

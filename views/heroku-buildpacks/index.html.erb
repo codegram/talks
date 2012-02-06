@@ -1,0 +1,251 @@
+<%=render partial: 'intro'%>
+
+<div class='step slide' data-x="1000">
+  <h1>What happens when you push a Rack/Rails app to Heroku?</h1>
+  <%=code('bash')%>
+   $ git push heroku master
+   -----> Heroku receiving push
+   -----> Ruby/Rails app detected               # Maybe
+   -----> Installing dependencies using Bundler version 1.1.rc
+          Running: bundle install --without development:test
+          ...
+   -----> Writing config/database.yml to read from DATABASE_URL
+   -----> Preparing app for Rails asset pipeline
+          Running: rake assets:precompile       # Rails 3.1 or higher
+   -----> Rails plugin injection                # Rails-specific
+          Injecting rails_log_stdout
+          Injecting rails3_serve_static_assets
+   -----> Discovering process types
+          Procfile declares types      -> web
+          Default types for Ruby/Rails -> console, rake, worker
+  <%=endcode%>
+</div>
+
+<div class='step slide' data-scale="2" data-x="1000">
+  <p class='centered'>
+    <img src="/images/heroku-buildpacks/philosoraptor.jpg" />
+  </p>
+  <h1 class='centered'>What's behind all that logic?</h1>
+</div>
+
+<div class='step slide' data-x="1000">
+  <h1 class='centered' style='margin-top: 80px'>Heroku hides all that from us.</h1>
+  <p class='centered'>
+    <img src="/images/heroku-buildpacks/okay.jpg" />
+  </p>
+</div>
+
+<div class='step slide' data-x="1000" data-scale="10">
+  <h1 class='centered' style='margin-top: 250px'>Until now!</h1>
+</div>
+
+<div class='step slide' data-x="1000">
+  <h1>Introducing heroku buildpacks</h1>
+  <p>
+    We now have all the flexibility of deploying Heroku apps right at the
+    <strong>build phase</strong>
+  </p>
+  <p class='centered'>
+    <img src="/images/heroku-buildpacks/no-words.jpg" width="550" />
+    <br />
+    <strong>It is in the beta program!</strong>
+  </p>
+</div>
+<div class="step slide">
+  <h1>Heroku already had support for...</h1>
+  <ul>
+    <li style="display: inline-block; margin: 20px">
+      <img src="/images/heroku-buildpacks/ruby.gif" height="120" />
+    </li>
+    <li style="display: inline-block; margin: 20px">
+      <img src="/images/heroku-buildpacks/nodejs.png" height="80" />
+    </li>
+    <li style="display: inline-block; margin: 20px">
+      <img src="/images/heroku-buildpacks/clojure-logo.gif" />
+      <img src="/images/heroku-buildpacks/clojure.gif" />
+    </li>
+    <li style="display: inline-block; margin: 20px">
+      <img src="/images/heroku-buildpacks/php.png" height="120" />
+    </li>
+    <li style="display: inline-block; margin: 20px">
+      <img src="/images/heroku-buildpacks/java.jpg" height="120" />
+    </li>
+    <li style="display: inline-block; margin: 20px">
+      <img src="/images/heroku-buildpacks/python.png" height="120" />
+    </li>
+    <li style="display: inline-block; margin: 20px">
+      <em>[...]</em>
+    </li>
+  </ul>
+</div>
+
+<div class='step slide'>
+  <h1>In the short existence of <em>buildpacks</em>, people has added support for:</h1>
+  <ul>
+    <li><a href="https://github.com/heroku/heroku-buildpack-erlang" target='_blank'>Erlang (heroku)</a></h1>
+    <li><a href="https://github.com/kr/heroku-buildpack-go" target='_blank'>Google Go (Keith Rarick)</a></h1>
+    <li><a href="https://github.com/lstoll/heroku-buildpack-perl" target='_blank'>Perl (Lincoln Stoll)</a></h1>
+    <li><a href="https://github.com/heroku/heroku-buildpack-c" target='_blank'>C (Heroku)</a></h1>
+    <li><a href="https://github.com/freeformz/heroku-buildpack-io" target='_blank'>C (Edward Muller)</a></h1>
+    <li><a href="https://github.com/brandur/heroku-buildpack-mono" target='_blank'>Mono (Brandur)</a></h1>
+    <li><a href="https://github.com/technomancy/heroku-buildpack-emacs" target='_blank'>Emacs (Phil Hagelberg) - <em>WAT?</em></a></h1>
+    <li><a href="https://github.com/hone/heroku-buildpack-jsnes" target='_blank'>jsnee (Terence Lee) - <em>NES Roms on javascript!</em></a></h1>
+  </ul>
+</div>
+
+<div class='step slide' data-x="1000">
+  <h1>A short introduction to the <em>buildpack API</em></h1>
+  <h2>Formed by three basic pieces</h2>
+  <ol>
+    <li><em>bin/detect</em></li>
+    <li><em>bin/compile</em></li>
+    <li><em>bin/release</em></li>
+  </ol>
+  <p>They're all <strong>bash scripts!</strong>. That means that can be written
+  in any scripting language present on the system - <em>Ruby, Perl, Bash, whatever</em>
+  </p>
+</div>
+
+<div class='step slide' data-x="2000">
+  <h1>1) bin/detect</h1>
+  <p>It takes <em>BUILD_DIR</em> as a single argument and should return an exit
+  code of 0 if the app present at <em>BUILD_DIR</em> can be serviced with this
+  buildpack.</p>
+  <%=code 'ruby'%>
+    $:.unshift File.expand_path("../../lib", __FILE__)
+    require "language_pack"
+
+    if pack = LanguagePack.detect(ARGV.first)
+      puts pack.name; exit 0
+    else
+      puts "no"; exit 1
+    end
+
+    [...] File.exist?("config.ru")             # LanguagePack::Rack
+    [...] File.exist?("config/environment.rb") # LanguagePack::Rails2
+
+    # LanguagePack::Rails3
+    [...] File.read("config/application.rb") =~ /Rails::Application/
+
+  <%=endcode%>
+</div>
+
+<div class='step slide' data-x="3000">
+  <h1>2) bin/compile</h1>
+  <p>
+    Performs all the buildpack transformation. Takes <em>BUILD_DIR</em>
+    (which can be modified) and <em>CACHE_DIR</em> that will be reused between
+    deploys. Any output will be displayed to the user.
+  </p>
+  <%=code 'ruby'%>
+    $:.unshift File.expand_path("../../lib", __FILE__)
+    require "language_pack"
+
+    if pack = LanguagePack.detect(ARGV[0], ARGV[1])
+      pack.log("compile") do
+        pack.compile
+      end
+    end
+  <%=endcode%>
+</div>
+
+<div class='step slide' data-x="3000">
+  <h1>2) Interesting parts of bin/compile</h1>
+  <h2>Installing plugins</h2>
+  <%=code 'ruby'%>
+    class LanguagePack::Rails3
+      # vendors an individual plugin
+      # @param [String] name of the plugin
+      def install_plugin(name)
+        plugin_dir = "vendor/plugins/#{name}"
+        return if File.exist?(plugin_dir)
+        puts "Injecting #{name}"
+        FileUtils.mkdir_p plugin_dir
+        Dir.chdir(plugin_dir) do |dir|
+          run("curl #{VENDOR_URL}/#{name}.tgz -s -o - | tar xzf -")
+        end
+      end
+    end
+  <%=endcode%>
+</div>
+
+<div class='step slide' data-x="3000">
+  <h1>2) Interesting parts of bin/compile</h1>
+  <h2>Taken from io buildpack</h2>
+  <%=code 'bash'%>
+  echo "Compiling io v${io_version}..." | indent
+  #Compile IO
+  curl -s ${io_url} > ${io_file}
+  tar zxf ${io_file}
+  cd ${io_tar_dir}
+  sed -i s/add_subdirectory\(Python\)/#add_subdirectory\(Python\)/ addons/CMakeLists.txt
+  mkdir build
+  cd build
+  cmake -DCMAKE_INSTALL_PREFIX=${target} -DCMAKE_FIND_ROOT_PATH=${target} -DCMAKE_BUILD_TYPE=release .. | indent
+  make install | indent
+  cd ..
+  <%=endcode%>
+</div>
+
+<div class='step slide' data-x="4000">
+  <h1>3) bin/release</h1>
+  <p>Takes <em>BUILD_DIR</em> and returns a <strong>YAML</strong> formatted hash with three keys:</p>
+  <ul>
+    <li><em>addons</em> is a list of default <strong>addons</strong> to install</li>
+    <li><em>config_vars</em> is a hash of <strong>default environment vars</strong> to use. These will only be applied the first time the buildpack is used for each app.</li>
+    <li><em>default_process_types</em> is a YAML of default <strong>Procfile</strong> entries for this buildpack.</li>
+    <%=code 'bash'%>
+      addons:
+        - shared-database:5mb
+      config_vars:
+        PATH: "bin:/usr/bin:/bin"
+      default_process_types:
+        hello: "cat hello.txt"
+<%=endcode%>
+</div>
+
+<div class='step slide' data-x="5000">
+  <h1>Usage</h1>
+  <%=code 'bash'%>
+    $ heroku create -s cedar --buildpack https://github.com/buildpack_url
+  <%=endcode%>
+  <p class='centered'>
+    <img src="/images/heroku-buildpacks/simple.jpg" />
+  </p>
+  <p class="centered">
+    <a href="http://devcenter.heroku.com/articles/buildpacks">Heroku buildpacks documentation</a>
+  </p>
+</div>
+
+
+<div class='step slide' data-x="5000" data-scale="4">
+  <h1>What can we do with buildpacks?</h1>
+  <ul>
+    <li>
+      <strong>Better integration for our existing apps</strong><br />
+      remember the <em>asset pipeline hell</em>?
+    </li>
+    <li>
+      <strong>Additional actions on deployment</strong><br />
+      Synchronize assets or databases, cloning remote private repos?
+    </li>
+    <li>
+      <strong>Provide support for additional languages</strong><br />
+      <em>NoScript</em>, anyone? ;)
+    </li>
+    <li>
+      Just <strong>knowing what the heck is going on</strong> behind the scenes.
+    </li>
+    <li><strong>Having a Codegram buildpack</strong> with all our default addons and standard procedures build-in</li>
+    <li> <strong>World domination</strong> </li>
+    <li>
+      <strong>Ideas ...?</strong><br />
+    </li>
+  </ul>
+</div>
+
+<div class='step slide' data-rotate-z="90" data-x="5000" data-scale="4">
+  <p class='centered'>
+    <img src="/images/heroku-buildpacks/thanks.jpg" />
+  </p>
+</div>

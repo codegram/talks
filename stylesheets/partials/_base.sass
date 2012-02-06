@@ -1,0 +1,48 @@
+@import "compass"
+
+$reversed-text: false
+$codegram-color: #DB2E34
+
+// Base Font
+$base-font-family: 'Open Sans'
+$base-font-size: 100%
+$base-line-height: 1.4
+
+// Fixed Font
+$fixed-font-family: Monaco, "Andale Mono", "Lucida Console", monospace
+$fixed-font-size: 100%
+$fixed-line-height: $base-line-height
+
+// Text Colors
+$text-color: #333333
+$loud-color: strengthen($text-color)
+$quiet-color: soften($text-color, 1.5)
+$header-color: strengthen($text-color, 0.66)
+
+// Link Colors
+$link-color: $codegram-color
+$link-visited-color: $link-color
+$link-hover-color: $codegram-color
+
+// Theme Colors
+$background-color: white
+$banner-color: #973b12
+
+// Paragraphs
+$indented-paragraphs: false
+
+// Layout
+$body-margin-x: 15%
+
+// Border Radius
+$default-border-radius: 8px
+
+@import "modules/all"
+
+@include global-reset
+@include reset-html5
+
+html, body
+  background: $background-color
+body
+  @include base-font
