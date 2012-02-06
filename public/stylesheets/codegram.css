@@ -343,14 +343,15 @@ body #impress .step.active {
   transition-duration: 1s;
 }
 
-.slide {
+body #impress .slide {
   height: 700px;
   width: 900px;
   padding: 30px;
   font-size: 24px;
   line-height: 36px;
+  visibility: visible;
 }
-.slide h1 {
+body #impress .slide h1 {
   margin-top: 0px;
 }
 
