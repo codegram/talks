@@ -1,0 +1,244 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+body {
+  line-height: 1;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+caption, th, td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+q, blockquote {
+  quotes: none;
+}
+q:before, q:after, blockquote:before, blockquote:after {
+  content: "";
+  content: none;
+}
+
+a img {
+  border: none;
+}
+
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
+  display: block;
+}
+
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
+  display: block;
+}
+
+html, body {
+  background: white;
+}
+
+body {
+  color: #333333;
+  font-family: "Open Sans";
+  font-size: 100%;
+  line-height: 1.4;
+}
+
+@font-face {
+  font-family: Klavika;
+  src: url('fonts/klavika-regular-webfont.woff') format('woff');
+}
+
+@font-face {
+  font-family: Klavika;
+  src: url('fonts/klavika-medium-webfont.woff') format('woff');
+  font-weight: bold;
+}
+
+body h1, body h2, body h3 {
+  font-family: Klavika, "Helvetica Neue", Helvetica, Arial;
+}
+
+.links a:link, body a:link {
+  color: #db2e34;
+  text-decoration: underline;
+}
+.links a:visited, body a:visited {
+  color: #db2e34;
+}
+.links a:hover, body a:hover {
+  color: #db2e34;
+  text-decoration: none;
+}
+
+.typography strong, body strong, .typography b, body b {
+  color: strengthen(#333333);
+  font-weight: bold;
+}
+.typography em, body em, .typography i, body i {
+  font-style: italic;
+}
+.typography abbr, body abbr, .typography acronym, body acronym {
+  border-bottom: 1px dotted #999999;
+}
+.typography sub, body sub, .typography sup, body sup {
+  font-size: 85%;
+}
+.typography sub, body sub {
+  vertical-align: sub;
+}
+.typography sup, body sup {
+  vertical-align: super;
+}
+.typography span.caps, body span.caps {
+  font-size: 95%;
+}
+.typography h1, body h1, .typography h2, body h2, .typography h3, body h3, .typography h4, body h4, .typography h5, body h5, .typography h6, body h6 {
+  color: strengthen(#333333, 0.66);
+  margin: 1em 0;
+}
+.typography h1, body h1 {
+  font-weight: bold;
+  font-size: 200%;
+  line-height: 1.099;
+  margin: 0.75em 0;
+}
+.typography h2, body h2 {
+  font-weight: bold;
+  font-size: 170%;
+  line-height: 1.099;
+}
+.typography h3, body h3 {
+  font-weight: bold;
+  font-size: 140%;
+  line-height: 1.169;
+  margin: 1.25em 0 0.5em;
+}
+.typography h4, body h4 {
+  font-weight: bold;
+  font-size: 110%;
+  line-height: 1.26;
+  margin: 0.5em 0 0.5em;
+}
+.typography h5, body h5 {
+  font-style: italic;
+  font-size: 110%;
+  line-height: 1.4;
+  margin: 0.65em 0;
+}
+.typography h6, body h6 {
+  font-weight: bold;
+  margin-bottom: -0.75em;
+}
+.typography p, body p {
+  margin: 1em 0;
+}
+.typography ul, body ul, .typography ol, body ol, .typography dl, body dl {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+.typography ul, body ul, .typography ol, body ol, .typography dd, body dd {
+  padding-left: 2.25em;
+}
+.typography ul, body ul {
+  list-style: disc;
+}
+.typography ol, body ol {
+  list-style: decimal;
+}
+.typography li, body li {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+.typography dt, body dt {
+  margin-top: 1em;
+}
+.typography dd, body dd {
+  margin-bottom: 1em;
+}
+.typography code, body code, .typography dfn, body dfn, .typography kbd, body kbd, .typography samp, body samp, .typography tt, body tt {
+  font-family: Monaco, "Andale Mono", "Lucida Console", monospace;
+  font-size: 95%;
+  color: #666666;
+}
+.typography pre, body pre {
+  background: #666666;
+  color: #cccccc;
+  font-family: Monaco, "Andale Mono", "Lucida Console", monospace;
+  font-size: 95%;
+  line-height: 1.4;
+  margin: 1.5em 0;
+  padding: 1em;
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;
+  -o-border-radius: 8px;
+  -ms-border-radius: 8px;
+  -khtml-border-radius: 8px;
+  border-radius: 8px;
+}
+
+body {
+  color: rgba(0, 0, 0, 0.8);
+}
+body a {
+  text-decoration: none !important;
+}
+body a:hover {
+  text-decoration: underline !important;
+}
+
+#intro {
+  padding-top: 150px;
+  text-align: center;
+  page-break-after: always;
+}
+#intro h1 {
+  margin-top: 50px;
+}
+#intro h2 {
+  font-weight: normal;
+}
+
+#content {
+  width: 900px;
+  margin: 20px auto;
+  font-size: 24px;
+}
+
+.centered {
+  text-align: center;
+}
+
+img {
+  vertical-align: middle;
+}
+
+em {
+  background-color: #dddddd;
+  padding: 4px;
+}

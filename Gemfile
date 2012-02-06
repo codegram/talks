@@ -26,3 +26,5 @@ gem 'coffee-script'
 # Use mongrel for the Web server
 # gem 'mongrel'
 gem 'thin'
+
+gem 'heroku'
