@@ -24,6 +24,7 @@ gem 'slim'
 gem 'coffee-script'
 
 gem 'unicorn'
+gem 'thin'
 
 group :development do
   gem 'heroku'
