@@ -284,6 +284,12 @@ body #impress .step.active {
   transition-duration: 1s;
 }
 
+#tweet {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+}
+
 body #impress.impress-not-supported {
   padding: 20px;
   padding-bottom: 0px;
