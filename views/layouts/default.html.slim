@@ -55,6 +55,8 @@ html
     -if @not_a_presentation
       #content==yield
     -else
+      ==render partial: "navigation.html.slim"
+
       #impress class=(params[:print] ? 'impress-not-supported' : nil)
         ==yield
       .hint
