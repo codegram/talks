@@ -10,7 +10,7 @@ javascript:
       step_id = $(header).attr('id');
       step_header = $(header).children('h1:first').html();
       if (step_header != null)
-        $('nav#navigation ul').append('<li><a href="#'+step_id+'">'+step_header+'</a></li>');
+        $('nav#navigation ul').append('<li><a href="#/'+step_id+'">'+step_header+'</a></li>');
     });
 
     $('.menu_toggle').live('click', function(){ $('#navigation').toggle(); });
