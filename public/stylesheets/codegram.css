@@ -96,6 +96,18 @@ body h1, body h2, body h3 {
   text-decoration: none;
 }
 
+.help_links {
+  position: absolute;
+  width: 100%;
+  left: 35px;
+  bottom: 40px;
+  background-color: #ffffcd;
+  padding-left: 20px;
+}
+.help_links a {
+  display: block;
+}
+
 .typography strong, body strong, .typography b, body b {
   color: strengthen(#333333);
   font-weight: bold;
