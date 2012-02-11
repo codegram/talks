@@ -1,0 +1,85 @@
+<% @title = "Creating basic chrome extensions"%>
+<%=render partial: 'intro'%>
+
+<div id='description' class='step slide' data-x="1000" data-y="800">
+  <h1>What is an extension?</h1>
+  <p>Extensions are essentially web pages (html+js+css), and they can use all the APIs that the browser provides to web pages, from XMLHttpRequest to JSON to HTML5.</p>
+  <p>Common web pages features are boosted with a Chrome.* API.</p>
+</div>
+
+<div id='usefulness' class='step slide' data-x="1000" data-y="800">
+  <h1>What is it used for?</h1>
+  <ul>
+    <li>Modify DOM</li>
+    <li>Override Chrome pages (Bookmarks, History, New Tab)</li>
+    <li>Enhance some Chrome tools (Context menus, Desktop notifications, Omnibox)</li>
+    <li>Browser interaction (bookmarks, cookies, events, history, tabs...)</li>
+  </ul>
+</div>
+
+<div id='behaviour' class='step slide' data-x="1000" data-y="1600">
+  <h1>Selecting main behaviour</h1>
+  <ul>
+    <li>
+      <a href='http://code.google.com/chrome/extensions/browserAction.html' target='_blank'>Browser Action</a>
+      <p>Use it for features that make sense on most pages. In addition to its icon, a browser action can also have a tooltip, a badge, and a popup.</p>
+    </li>
+    <li>
+      <a href='http://code.google.com/chrome/extensions/pageAction.html' target='_blank'>Page Actions</a>
+      <p>Use it for features that make sense for only a few pages. In addition to its icon, a browser action can also have a tooltip and a popup.</p>
+    </li>
+    <li>
+      <a href='http://code.google.com/chrome/extensions/themes.html' target='_blank'>Themes</a> and <a href='http://code.google.com/chrome/extensions/apps.html' target='_blank'>Apps</a> are not covered in this talk.
+    </li>
+    <li>
+      None: is possible not to use any preset behaviour as we'll see later.
+    </li>
+  </ul>
+  <div class='help_links'>
+    <a href='http://code.google.com/intl/es/chrome/webstore/docs/choosing.html' target='_blank'>Google Guides: Help to choose which type you need</a>
+  </div>
+</div>
+
+<div id='arch' class='step slide' data-x="1000" data-y="2200">
+  <h1>Basic architechture</h1>
+  <ul>
+    <li>
+      <a href='http://code.google.com/chrome/extensions/manifest.html' target='_blank'>Manifest:</a>
+      Every extension has a JSON-formatted file providing important information.
+    </li>
+    <li>
+      <a href='http://code.google.com/chrome/extensions/background_pages.html' target='_blank'>Background Page:</a>
+      <i>(Optional)</i> An HTML page that runs in the extension process. It exists for the lifetime of your extension, and only one instance of it at a time is active.
+    </li>
+    <li>
+      UI Pages: <i>(Optional)</i> Popups for browser/page actions, options page, and more.
+    </li>
+    <li>
+      <a href='http://code.google.com/chrome/extensions/manifest.html' target='_blank'>Content Script:</a>
+      <i>(Optional)</i> If your extension needs to interact with web pages, then it needs a content script.
+    </li>
+  </ul>
+  <p>As you see, all except manifest are optional, but you need at least one to make your extension do something xD.</p>
+  <div class='help_links'>
+    <a href='http://code.google.com/chrome/extensions/overview.html#arch'>Google guides: Architechture</a>
+  </div>
+</div>
+
+<div id='basic_example' class='step slide'>
+  <h1>Basic: Links in a page</h1>
+
+</div>
+
+<div id='page_action_example' class='step slide'>
+  <h1>Page Action: Common messages for Intercom</h1>
+
+</div>
+
+<div id='browser_action_example' class='step slide'>
+  <h1>Browser Action: </h1>
+
+</div>
+
+<div class="step slide" data-x="2000" data-rotate="90" data-y="3400">
+  Thanks!
+</div>
