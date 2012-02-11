@@ -104,9 +104,6 @@ body h1, body h2, body h3 {
   background-color: #ffffcd;
   padding-left: 20px;
 }
-.help_links a {
-  display: block;
-}
 
 .typography strong, body strong, .typography b, body b {
   color: strengthen(#333333);

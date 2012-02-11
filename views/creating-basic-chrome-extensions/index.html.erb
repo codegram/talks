@@ -18,12 +18,12 @@
   <h1>Selecting main behaviour</h1>
   <ul>
     <li>
-      <a href='http://code.google.com/chrome/extensions/browserAction.html' target='_blank'>Browser Action</a>
-      <p>Use it for features that make sense on most pages. In addition to its icon, a browser action can also have a tooltip, a badge, and a popup.</p>
+      <a href='http://code.google.com/chrome/extensions/browserAction.html' target='_blank'>Browser Action</a>:
+      Use it for features that make sense on most pages. In addition to its icon, a browser action can also have a tooltip, a badge, and a popup.
     </li>
     <li>
-      <a href='http://code.google.com/chrome/extensions/pageAction.html' target='_blank'>Page Actions</a>
-      <p>Use it for features that make sense for only a few pages. In addition to its icon, a browser action can also have a tooltip and a popup.</p>
+      <a href='http://code.google.com/chrome/extensions/pageAction.html' target='_blank'>Page Actions</a>:
+      Use it for features that make sense for only a few pages. In addition to its icon, a browser action can also have a tooltip and a popup.
     </li>
     <li>
       <a href='http://code.google.com/chrome/extensions/themes.html' target='_blank'>Themes</a> and <a href='http://code.google.com/chrome/extensions/apps.html' target='_blank'>Apps</a> are not covered in this talk.
@@ -58,17 +58,96 @@
   </ul>
   <p>As you see, all except manifest are optional, but you need at least one to make your extension do something xD.</p>
   <div class='help_links'>
-    <a href='http://code.google.com/chrome/extensions/overview.html#arch'>Google guides: Architechture</a>
+    <a href='http://code.google.com/chrome/extensions/overview.html#arch' target='_blank'>Google guides: Architechture</a>
   </div>
 </div>
 
 <div id='basic_example' class='step slide' data-x="1000" data-y="2800">
-  <h1>Basic: Links in a page</h1>
-  bleh
+  <h1>Basic: Codegram troll faces</h1>
+  <p>
+    We'll start with a none preset behaviour. Create a folder inside your projects directory and create a file named 'manifest.json':
+  </p>
+  <%=code 'js'%>
+    {
+      "name": "TrollFaces",
+      "version": "0.1.1",
+      "description": "Must turn Codegram team members pics into troll faces.",
+      "content_scripts": [
+        {
+          // Change 'matches' attribute to load content
+          // script only in pages you want to.
+          "matches": ["http://codegram.com/team*"],
+          "css": ["basic.css"],
+          "js": ["jquery.min.js", "contentscript.js"]
+        }
+      ]
+    }
+  <%=endcode%>
 </div>
 
 <div id='basic_example_2' class='step slide' data-x="1000" data-y="2800">
-  blah
+  <p>You must now add files especified in manifest.json in the same folder of the extension.</p>
+  <p>For <strong>basic.css</strong> just add following lines:</p>
+  <%=code 'css'%>
+    #content h3 {
+      color: green
+    }
+  <%=endcode%>
+  <p>
+    For <strong>jquery.min.js</strong> visit <a href='http://jquery.com' target='_blank'>jQuery official site</a>.
+    Notice that I added 'jquery.min.js' in the manifest.json just as another file included in the extension.
+    You could instead, just point to: 'http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js'
+  </p>
+</div>
+
+<div id='basic_example_3' class='step slide' data-x="1000" data-y="2800">
+  <a href='http://code.google.com/chrome/extensions/manifest.html' target='_blank'><strong>Content Script:</strong></a>
+  It runs in it's isolated world, they only have access to DOM elements of the current page.
+  So, content scripts have some limitations. They cannot:
+  <ul>
+    <li>Use chrome.* APIs (except for parts of chrome.extension)</li>
+    <li>Use variables or functions defined by their extension's pages</li>
+    <li>Use variables or functions defined by web pages or by other content scripts</li>
+  </ul>
+  <p>
+  This lets you ie. load jQuery even if current page has already jQuery loaded (different versions included).
+  </p>
+  <p>
+    Content scripts can indirectly use the chrome.* APIs, get access to extension data, and request extension actions by exchanging messages with their parent extension.
+  </p>
+</div>
+
+<div id='basic_example_4' class='step slide' data-x="1000" data-y="2800">
+  <p>
+    In <strong>contentscript.js</strong> add the following code:
+  </p>
+  <%=code 'js'%>
+    $(document).ready(function() {
+      var trollface = chrome.extension.getURL("images/trollface.jpg");
+      $('#content article img').each(function(index, image){
+        $(image).attr('src', trollface);
+      });
+    });
+  <%=endcode%>
+  <p>
+    Just a little bit of jQuery here, we are getting all Codegram member images and changing the pic with a trollface.
+    Trollface must be at 'my_extension/images/trollface.jpg'.
+  </p>
+  <p>
+  So, as we have no access to other files of the parent extension (except for especified in manifest) we need to take advantage of chrome.extension API (ln 2).
+</div>
+
+<div id='basic_example_5' class='step slide' data-x="1000" data-y="2800">
+  Finally, enable the extension in Chrome.
+
+  <ul>
+    <li>Open Chrome browser</li>
+    <li>Open Options > Tools > Extensions</li>
+    <li>Click 'Load unpacked extension...' and find your extension folder</li>
+  </ul>
+  <p>If all goes Ok extension should be loaded. So if you go to <a href='http://codegram.com/team' target='_blank'>http://codegram.com/team</a> you should see some changes :D</p>
+  <img src='images/creating-basic-chrome-extensions/codegram_before.jpg'>
+  <img src='images/creating-basic-chrome-extensions/codegram_after.jpg'>
 </div>
 
 <div id='page_action_example' class='step slide' data-x="1000" data-y="3400">
