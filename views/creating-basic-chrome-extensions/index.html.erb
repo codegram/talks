@@ -173,7 +173,7 @@
 
 <div id='page_action_example_2' class='step slide' data-x="1000" data-y="3400">
   <p>
-    First we must make action icon/button appear. Create 'background.js' and put the following:
+  First we must make action icon/button appear. Create <strong>'background.js'</strong> and put the following:
   </p>
   <%=code 'js'%>
     chrome.tabs.onUpdated.addListener(showIntercomAction);
@@ -195,7 +195,7 @@
 
 <div id='page_action_example_3' class='step slide' data-x="1000" data-y="3400">
   <p>
-    So popup.html is what we see when we click page action icon:
+    So <strong>'popup.html'</strong> is what we see when we click page action icon:
   </p>
   <%=code 'html'%>
     <html>
@@ -205,7 +205,7 @@
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></sscript>
         <script src="popup.js"></sscript>
       </head>
-      <bbody>
+      <body>
         <ul id='messages'>
           <li><a href='#'>Message 1</li>
           <li><a href='#'>Message 2</li>
@@ -221,7 +221,7 @@
 
 <div id='page_action_example_4' class='step slide' data-x="1000" data-y="3400">
   <p>
-    Finish with 'popup.js'. For example purposes I just made an alert, but I'm sure you have more interesting things to do :)
+    Finish with <strong>'popup.js'</strong>. For example purposes I just made an alert, but I'm sure you have more interesting things to do :)
   </p>
   <%=code 'js'%>
     $(document).ready(function(){
@@ -244,8 +244,130 @@
 </div>
 
 <div id='browser_action_example' class='step slide' data-x="1000" data-y="4000">
-  <h1>Browser Action: </h1>
+  <h1>Browser Action: "Options page"</h1>
+  <p>
+    Browser Action works nearly the same way as Page Action. Main difference is that icon is always available at chrome's toolbar.
+    Manifest is sligthly different and you don't need any additional js to show it's icon.
+    So we are not going to repeat how <strong>'popup.html'</strong>, blah blah is implemented.
+  </p>
+  <p>
+    Instead, we are going to look how to create an options page for our extension and how to retrieve data in our content_scripts.
+  </p>
+</div>
 
+<div id='browser_action_example_2' class='step slide' data-x="1000" data-y="4000">
+  <%=code 'js'%>
+    {
+      "name": "Browser Action",
+      "version": "0.0.1",
+      "description": "Show how options page works",
+      // Needed to retrieve options from content script
+      "background_page": "background.html",
+      // Gives access to extension options from Extensions Manager
+      "options_page": "options.html",
+      // This is how you load Browser Action. Nearly equal to Page one.
+      "browser_action": {
+          "default_icon": "icon.png",
+          "popup": "popup.html"
+      },
+      "content_scripts": [
+        {
+          "matches": ["http://codegram.com/*"],
+          "js" : ["jquery.min.js", "showscript.js"]
+        }
+      ]
+    }
+  <%=endcode%>
+</div>
+
+<div id='browser_action_example_3' class='step slide' data-x="1000" data-y="4000">
+  <p>
+    Following code is for <strong>'options.html'</strong>. This just save an input into localStorage. You could access to this page through Extension Manager, there is an "Options" link next to your extension's description.
+  </p>
+  <%=code 'html'%>
+    <html>
+      <head><title>Extension Options</title></head>
+      <script type="text/javascript">
+        function save_options() {
+          var name = document.getElementById("name");
+          localStorage["name"] = name.value;
+          console.log(localStorage["name"]);
+        }
+      </sscript>
+      <body>
+        <div id='status'></div>
+        Your Name:<input type='text' id='name'></input>
+        <button onclick="save_options()">Save</button>
+      </body>
+    </html>
+  <%=endcode%>
+</script>
+</div>
+
+<div id='browser_action_example_4' class='step slide' data-x="1000" data-y="4000">
+  <p>
+    Now it's time to retrieve stored data. From content script we don't have access to it.
+    If you try to do:
+  </p>
+  <%=code 'js'%>
+    localStorage["name"];
+  <%=endcode%>
+  <p>
+    You'll get data from current page not from extension options. To get options data, we have to talk with background and ask them to return us requested info.
+    We'll see how it works in next page.
+  </p>
+</div>
+
+<div id='browser_action_example_5' class='step slide' data-x="1000" data-y="4000">
+  <p>
+    This goes to <strong>'background.html'</strong>:
+  </p>
+  <%=code 'js'%>
+    chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
+      if (request.method == "getLocalStorage")
+        sendResponse({data: localStorage[request.key]});
+      else
+        sendResponse({});
+    });
+  <%=endcode%>
+  <p>
+    We add a listener to onRequest. When someone makes a request to background, this returns something to the sender. In this case, it returns localStorage passed key.
+  </p>
+</div>
+
+<div id='browser_action_example_6' class='step slide' data-x="1000" data-y="4000">
+  <p>
+    This goes to <strong>'showscript.js'</strong>:
+  </p>
+  <%=code 'js'%>
+    $(document).ready(function() {
+      chrome.extension.sendRequest(
+        {method: "getLocalStorage", key: "name"},
+        function(response) {
+          alert(response.data);
+        }
+      );
+    });
+  <%=endcode%>
+  <p>
+  In order to give access to parent extension data, we have to use 'chrome.extension.*' again.
+  This time we make a request to background, and when we have a response, we just 'alert it'.
+  </p>
+  <p>
+    This is how we retrieve data saved in options page.
+  </p>
+</div>
+
+<div id='release' class='step slide' data-x="1000" data-y="4600">
+  <h1>Release your extension</h1>
+  <p>
+    Blah
+  </p>
+  <ul>
+    <li></li>
+    <li></li>
+    <li></li>
+  </ul>
 </div>
 
 <div class="step slide" data-x="2000" data-rotate="90" data-y="4600">
