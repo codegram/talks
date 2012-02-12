@@ -331,7 +331,7 @@
     });
   <%=endcode%>
   <p>
-    We add a listener to onRequest. When someone makes a request to background, this returns something to the sender. In this case, it returns localStorage passed key.
+    We add an onRequest listener. When someone makes a request to background, this returns something to the sender. In this case, it returns localStorage passed key.
   </p>
 </div>
 
@@ -361,15 +361,26 @@
 <div id='release' class='step slide' data-x="1000" data-y="4600">
   <h1>Release your extension</h1>
   <p>
-    Blah
+    You could send your extension folder to anyone, and ask them to load it as you exactly do. Another way is to pack your extension as a .crx file.
+  </p>
+  <p>
+  To do that, go to Extension Manager and click <strong>'Pack extension...'</strong>. Find extension folder and leave 'key field' blank. Once done, you'll get a .crx file that is used to install your extension. You'll receive a key file too, which you'll need to make updated versions of your .crx file.
+  </p>
+  <p>
+  For more information about releasing new versions and distributing your extension take a look at:
   </p>
   <ul>
-    <li></li>
-    <li></li>
-    <li></li>
-  </ul>
+    <li><a href='http://code.google.com/chrome/extensions/packaging.html' target='_blank'>Google Guides: Packaging</a></li>
+    <li><a href='http://code.google.com/chrome/extensions/autoupdate.html' target='_blank'>Google Guides: Autoupdating</a></li>
+    <li><a href='http://code.google.com/chrome/extensions/hosting.html' target='_blank'>Google Guides: Hosting</a></li>
+    <li><a href='http://code.google.com/chrome/extensions/external_extensions.html' target='_blank'>Google Guides: Other deployment options</a></li>
 </div>
 
 <div class="step slide" data-x="2000" data-rotate="90" data-y="4600">
-  Thanks!
+  <p class='centered'>
+    Thanks for your time!
+  </p>
+  <p class='centered'>
+    <small style="font-size: 20px">By Marc Divins (@mdivins - <a href="http://twitter.com/mdivins" target="_blank">Twitter</a>) (/divins - <a href="http://github.com/divins" target="_blank">GitHub</a>)</small>
+  </p>
 </div>
