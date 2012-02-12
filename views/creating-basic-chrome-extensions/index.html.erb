@@ -52,7 +52,7 @@
       UI Pages: <i>(Optional)</i> Popups for browser/page actions, options page, and more.
     </li>
     <li>
-      <a href='http://code.google.com/chrome/extensions/manifest.html' target='_blank'>Content Script:</a>
+      <a href='http://code.google.com/chrome/extensions/content_scripts.html' target='_blank'>Content Script:</a>
       <i>(Optional)</i> If your extension needs to interact with web pages, then it needs a content script.
     </li>
   </ul>
@@ -95,13 +95,11 @@
   <%=endcode%>
   <p>
     For <strong>jquery.min.js</strong> visit <a href='http://jquery.com' target='_blank'>jQuery official site</a>.
-    Notice that I added 'jquery.min.js' in the manifest.json just as another file included in the extension.
-    You could instead, just point to: 'http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js'
   </p>
 </div>
 
 <div id='basic_example_3' class='step slide' data-x="1000" data-y="2800">
-  <a href='http://code.google.com/chrome/extensions/manifest.html' target='_blank'><strong>Content Script:</strong></a>
+  <a href='http://code.google.com/chrome/extensions/content_scripts.html' target='_blank'>Content Script:</a>
   It runs in it's isolated world, they only have access to DOM elements of the current page.
   So, content scripts have some limitations. They cannot:
   <ul>
@@ -151,8 +149,98 @@
 </div>
 
 <div id='page_action_example' class='step slide' data-x="1000" data-y="3400">
-  <h1>Page Action: Common messages for Intercom</h1>
+  <h1>Page Action: Intercom Messages</h1>
+  <%=code 'js'%>
+    {
+      "name": "Intercom Common Messages",
+      "version": "1.0",
+      "description": "Quick Intercom answers with a click.",
+      "background": {
+        "scripts": ["background.js"]
+      },
+      "page_action" :
+      {
+        "default_icon" : "intercom_logo.png",
+        "default_title" : "You're at Intercom page!",
+        "default_popup": "popup.html"
+      },
+      "permissions" : [
+        "tabs", "http://intercom.io/*"
+      ]
+    }
+  <%=endcode%>
+</div>
 
+<div id='page_action_example_2' class='step slide' data-x="1000" data-y="3400">
+  <p>
+    First we must make action icon/button appear. Create 'background.js' and put the following:
+  </p>
+  <%=code 'js'%>
+    chrome.tabs.onUpdated.addListener(showIntercomAction);
+
+    function showIntercomAction(tabId, changeInfo, tab) {
+      if (tab.url.indexOf('intercom.io') > -1) {
+        chrome.pageAction.show(tabId);
+      }
+    };
+  <%=endcode%>
+  <p>
+    I'm still not sure if it's the best way to do it, but is the only one I could made it work.
+  </p>
+  <ul>
+    <li>ln.1 - Add a listener so background knows when a tab has changed. You need 'tabs' persmission, that's why we added it to manifest file.</li>
+    <li>ln.5 - Show icon for page action in the current tab.</li>
+  </ul>
+</div>
+
+<div id='page_action_example_3' class='step slide' data-x="1000" data-y="3400">
+  <p>
+    So popup.html is what we see when we click page action icon:
+  </p>
+  <%=code 'html'%>
+    <html>
+      <head>
+        <title>Common Messages for Intercom</title>
+        <link rel="stylesheet" type="text/css" href="popup.css">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></sscript>
+        <script src="popup.js"></sscript>
+      </head>
+      <bbody>
+        <ul id='messages'>
+          <li><a href='#'>Message 1</li>
+          <li><a href='#'>Message 2</li>
+        </ul>
+      </body>
+    </html>
+  <%=endcode%>
+  </script>
+  <p>
+    Meh! For presentation issues I had to finish scripts with a double 's', fix it!
+  </p>
+</div>
+
+<div id='page_action_example_4' class='step slide' data-x="1000" data-y="3400">
+  <p>
+    Finish with 'popup.js'. For example purposes I just made an alert, but I'm sure you have more interesting things to do :)
+  </p>
+  <%=code 'js'%>
+    $(document).ready(function(){
+      $('ul#messages li a').click(function(){
+        chrome.tabs.executescript(null,
+          {code:"alert('meeeeeeh');"});
+      });
+    });
+  <%=endcode%>
+  </script>
+  <p>
+    In ln.3 we have to call 'tabs.executescript' because we are not in the current page environment, we are at extension one. You also need 'tabs' permission to do that.
+  </p>
+  <p>
+    Hint: Instead of passing raw code like in ln.4, we could pass a .js file:
+    <%=code 'js'%>
+      {file:"my_script.js"}
+    <%=endcode%>
+  </p>
 </div>
 
 <div id='browser_action_example' class='step slide' data-x="1000" data-y="4000">
