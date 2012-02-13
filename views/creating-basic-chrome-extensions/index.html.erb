@@ -1,0 +1,386 @@
+<% @title = "Creating basic chrome extensions"%>
+<%=render partial: 'intro'%>
+
+<div id='description' class='step slide' data-x="1000" data-y="800">
+  <h2>What is an extension?</h2>
+  <p>Extensions are essentially web pages (html+js+css), and they can use all the APIs that the browser provides to web pages, from XMLHttpRequest to JSON to HTML5. Common features are boosted with a <a href='http://code.google.com/chrome/extensions/api_index.html' target='_blank'>Chrome.* API</a>.</p>
+
+  <h2>What is it used for?</h2>
+  <ul>
+    <li>Modify DOM</li>
+    <li>Override Chrome pages (Bookmarks, History, New Tab)</li>
+    <li>Enhance some Chrome tools (Context menus, Desktop notifications, Omnibox)</li>
+    <li>Browser interaction (bookmarks, cookies, events, history, tabs...)</li>
+  </ul>
+</div>
+
+<div id='behaviour' class='step slide' data-x="1000" data-y="1600">
+  <h1>Selecting main behaviour</h1>
+  <ul>
+    <li>
+      <a href='http://code.google.com/chrome/extensions/browserAction.html' target='_blank'>Browser Action</a>:
+      Use it for features that make sense on most pages. In addition to its icon, a browser action can also have a tooltip, a badge, and a popup.
+    </li>
+    <li>
+      <a href='http://code.google.com/chrome/extensions/pageAction.html' target='_blank'>Page Actions</a>:
+      Use it for features that make sense for only a few pages. In addition to its icon, a browser action can also have a tooltip and a popup.
+    </li>
+    <li>
+      <a href='http://code.google.com/chrome/extensions/themes.html' target='_blank'>Themes</a> and <a href='http://code.google.com/chrome/extensions/apps.html' target='_blank'>Apps</a> are not covered in this talk.
+    </li>
+    <li>
+      None: is possible not to use any preset behaviour as we'll see later.
+    </li>
+  </ul>
+  <div class='help_links'>
+    <a href='http://code.google.com/intl/es/chrome/webstore/docs/choosing.html' target='_blank'>Google Guides: Help to choose which type you need</a>
+  </div>
+</div>
+
+<div id='arch' class='step slide' data-x="1000" data-y="2200">
+  <h1>Basic architechture</h1>
+  <ul>
+    <li>
+      <a href='http://code.google.com/chrome/extensions/manifest.html' target='_blank'>Manifest:</a>
+      Every extension has a JSON-formatted file providing important information.
+    </li>
+    <li>
+      <a href='http://code.google.com/chrome/extensions/background_pages.html' target='_blank'>Background Page:</a>
+      <i>(Optional)</i> An HTML page that runs in the extension process. It exists for the lifetime of your extension, and only one instance of it at a time is active.
+    </li>
+    <li>
+      UI Pages: <i>(Optional)</i> Popups for browser/page actions, options page, and more.
+    </li>
+    <li>
+      <a href='http://code.google.com/chrome/extensions/content_scripts.html' target='_blank'>Content Script:</a>
+      <i>(Optional)</i> If your extension needs to interact with web pages, then it needs a content script.
+    </li>
+  </ul>
+  <p>As you see, all except manifest are optional, but you need at least one to make your extension do something xD.</p>
+  <div class='help_links'>
+    <a href='http://code.google.com/chrome/extensions/overview.html#arch' target='_blank'>Google guides: Architechture</a>
+  </div>
+</div>
+
+<div id='basic_example' class='step slide' data-x="1000" data-y="2800">
+  <h1>Basic: Codegram troll faces</h1>
+  <p>
+    We'll start with a none preset behaviour. Create a folder inside your projects directory and create a file named 'manifest.json':
+  </p>
+  <%=code 'js'%>
+    {
+      "name": "TrollFaces",
+      "version": "0.1.1",
+      "description": "Must turn Codegram team members pics into troll faces.",
+      "content_scripts": [
+        {
+          // Change 'matches' attribute to load content
+          // script only in pages you want to.
+          "matches": ["http://codegram.com/team*"],
+          "css": ["basic.css"],
+          "js": ["jquery.min.js", "contentscript.js"]
+        }
+      ]
+    }
+  <%=endcode%>
+</div>
+
+<div id='basic_example_2' class='step slide' data-x="1000" data-y="2800">
+  <p>You must now add files especified in manifest.json in the same folder of the extension.</p>
+  <p>For <strong>basic.css</strong> just add following lines:</p>
+  <%=code 'css'%>
+    #content h3 {
+      color: green
+    }
+  <%=endcode%>
+  <p>
+    For <strong>jquery.min.js</strong> visit <a href='http://jquery.com' target='_blank'>jQuery official site</a>.
+  </p>
+</div>
+
+<div id='basic_example_3' class='step slide' data-x="1000" data-y="2800">
+  <a href='http://code.google.com/chrome/extensions/content_scripts.html' target='_blank'>Content Script:</a>
+  It runs in it's isolated world, they only have access to DOM elements of the current page.
+  So, content scripts have some limitations. They cannot:
+  <ul>
+    <li>Use chrome.* APIs (except for parts of chrome.extension)</li>
+    <li>Use variables or functions defined by their extension's pages</li>
+    <li>Use variables or functions defined by web pages or by other content scripts</li>
+  </ul>
+  <p>
+  This lets you ie. load jQuery even if current page has already jQuery loaded (different versions included).
+  </p>
+  <p>
+    Content scripts can indirectly use the chrome.* APIs, get access to extension data, and request extension actions by exchanging messages with their parent extension.
+  </p>
+</div>
+
+<div id='basic_example_4' class='step slide' data-x="1000" data-y="2800">
+  <p>
+    In <strong>contentscript.js</strong> add the following code:
+  </p>
+  <%=code 'js'%>
+    $(document).ready(function() {
+      var trollface = chrome.extension.getURL("images/trollface.jpg");
+      $('#content article img').each(function(index, image){
+        $(image).attr('src', trollface);
+      });
+    });
+  <%=endcode%>
+  <p>
+    Just a little bit of jQuery here, we are getting all Codegram member images and changing the pic with a trollface.
+    Trollface must be at 'my_extension/images/trollface.jpg'.
+  </p>
+  <p>
+  So, as we have no access to other files of the parent extension (except for especified in manifest) we need to take advantage of chrome.extension API (ln 2).
+</div>
+
+<div id='basic_example_5' class='step slide' data-x="1000" data-y="2800">
+  Finally, enable the extension in Chrome.
+
+  <ul>
+    <li>Open Chrome browser</li>
+    <li>Open Options > Tools > Extensions</li>
+    <li>Click 'Load unpacked extension...' and find your extension folder</li>
+  </ul>
+  <p>If all goes Ok extension should be loaded. So if you go to <a href='http://codegram.com/team' target='_blank'>http://codegram.com/team</a> you should see some changes :D</p>
+  <img src='images/creating-basic-chrome-extensions/codegram_before.jpg'>
+  <img src='images/creating-basic-chrome-extensions/codegram_after.jpg'>
+</div>
+
+<div id='page_action_example' class='step slide' data-x="1000" data-y="3400">
+  <h1>Page Action: Intercom Messages</h1>
+  <%=code 'js'%>
+    {
+      "name": "Intercom Common Messages",
+      "version": "1.0",
+      "description": "Quick Intercom answers with a click.",
+      "background": {
+        "scripts": ["background.js"]
+      },
+      "page_action" :
+      {
+        "default_icon" : "intercom_logo.png",
+        "default_title" : "You're at Intercom page!",
+        "default_popup": "popup.html"
+      },
+      "permissions" : [
+        "tabs", "http://intercom.io/*"
+      ]
+    }
+  <%=endcode%>
+</div>
+
+<div id='page_action_example_2' class='step slide' data-x="1000" data-y="3400">
+  <p>
+  First we must make action icon/button appear. Create <strong>'background.js'</strong> and put the following:
+  </p>
+  <%=code 'js'%>
+    chrome.tabs.onUpdated.addListener(showIntercomAction);
+
+    function showIntercomAction(tabId, changeInfo, tab) {
+      if (tab.url.indexOf('intercom.io') > -1) {
+        chrome.pageAction.show(tabId);
+      }
+    };
+  <%=endcode%>
+  <p>
+    I'm still not sure if it's the best way to do it, but is the only one I could made it work.
+  </p>
+  <ul>
+    <li>ln.1 - Add a listener so background knows when a tab has changed. You need 'tabs' persmission, that's why we added it to manifest file.</li>
+    <li>ln.5 - Show icon for page action in the current tab.</li>
+  </ul>
+</div>
+
+<div id='page_action_example_3' class='step slide' data-x="1000" data-y="3400">
+  <p>
+    So <strong>'popup.html'</strong> is what we see when we click page action icon:
+  </p>
+  <%=code 'html'%>
+    <html>
+      <head>
+        <title>Common Messages for Intercom</title>
+        <link rel="stylesheet" type="text/css" href="popup.css">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></sscript>
+        <script src="popup.js"></sscript>
+      </head>
+      <body>
+        <ul id='messages'>
+          <li><a href='#'>Message 1</li>
+          <li><a href='#'>Message 2</li>
+        </ul>
+      </body>
+    </html>
+  <%=endcode%>
+  </script>
+  <p>
+    Meh! For presentation issues I had to finish scripts with a double 's', fix it!
+  </p>
+</div>
+
+<div id='page_action_example_4' class='step slide' data-x="1000" data-y="3400">
+  <p>
+    Finish with <strong>'popup.js'</strong>. For example purposes I just made an alert, but I'm sure you have more interesting things to do :)
+  </p>
+  <%=code 'js'%>
+    $(document).ready(function(){
+      $('ul#messages li a').click(function(){
+        chrome.tabs.executescript(null,
+          {code:"alert('meeeeeeh');"});
+      });
+    });
+  <%=endcode%>
+  </script>
+  <p>
+    In ln.3 we have to call 'tabs.executescript' because we are not in the current page environment, we are at extension one. You also need 'tabs' permission to do that.
+  </p>
+  <p>
+    Hint: Instead of passing raw code like in ln.4, we could pass a .js file:
+    <%=code 'js'%>
+      {file:"my_script.js"}
+    <%=endcode%>
+  </p>
+</div>
+
+<div id='browser_action_example' class='step slide' data-x="1000" data-y="4000">
+  <h1>Browser Action: "Options page"</h1>
+  <p>
+    Browser Action works nearly the same way as Page Action. Main difference is that icon is always available at chrome's toolbar.
+    Manifest is sligthly different and you don't need any additional js to show it's icon.
+    So we are not going to repeat how <strong>'popup.html'</strong>, blah blah is implemented.
+  </p>
+  <p>
+    Instead, we are going to look how to create an options page for our extension and how to retrieve data in our content_scripts.
+  </p>
+</div>
+
+<div id='browser_action_example_2' class='step slide' data-x="1000" data-y="4000">
+  <%=code 'js'%>
+    {
+      "name": "Browser Action",
+      "version": "0.0.1",
+      "description": "Show how options page works",
+      // Needed to retrieve options from content script
+      "background_page": "background.html",
+      // Gives access to extension options from Extensions Manager
+      "options_page": "options.html",
+      // This is how you load Browser Action. Nearly equal to Page one.
+      "browser_action": {
+          "default_icon": "icon.png",
+          "popup": "popup.html"
+      },
+      "content_scripts": [
+        {
+          "matches": ["http://codegram.com/*"],
+          "js" : ["jquery.min.js", "showscript.js"]
+        }
+      ]
+    }
+  <%=endcode%>
+</div>
+
+<div id='browser_action_example_3' class='step slide' data-x="1000" data-y="4000">
+  <p>
+    Following code is for <strong>'options.html'</strong>. This just save an input into localStorage. You could access to this page through Extension Manager, there is an "Options" link next to your extension's description.
+  </p>
+  <%=code 'html'%>
+    <html>
+      <head><title>Extension Options</title></head>
+      <script type="text/javascript">
+        function save_options() {
+          var name = document.getElementById("name");
+          localStorage["name"] = name.value;
+          console.log(localStorage["name"]);
+        }
+      </sscript>
+      <body>
+        <div id='status'></div>
+        Your Name:<input type='text' id='name'></input>
+        <button onclick="save_options()">Save</button>
+      </body>
+    </html>
+  <%=endcode%>
+</script>
+</div>
+
+<div id='browser_action_example_4' class='step slide' data-x="1000" data-y="4000">
+  <p>
+    Now it's time to retrieve stored data. From content script we don't have access to it.
+    If you try to do:
+  </p>
+  <%=code 'js'%>
+    localStorage["name"];
+  <%=endcode%>
+  <p>
+    You'll get data from current page not from extension options. To get options data, we have to talk with background and ask them to return us requested info.
+    We'll see how it works in next page.
+  </p>
+</div>
+
+<div id='browser_action_example_5' class='step slide' data-x="1000" data-y="4000">
+  <p>
+    This goes to <strong>'background.html'</strong>:
+  </p>
+  <%=code 'js'%>
+    chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
+      if (request.method == "getLocalStorage")
+        sendResponse({data: localStorage[request.key]});
+      else
+        sendResponse({});
+    });
+  <%=endcode%>
+  <p>
+    We add an onRequest listener. When someone makes a request to background, this returns something to the sender. In this case, it returns localStorage passed key.
+  </p>
+</div>
+
+<div id='browser_action_example_6' class='step slide' data-x="1000" data-y="4000">
+  <p>
+    This goes to <strong>'showscript.js'</strong>:
+  </p>
+  <%=code 'js'%>
+    $(document).ready(function() {
+      chrome.extension.sendRequest(
+        {method: "getLocalStorage", key: "name"},
+        function(response) {
+          alert(response.data);
+        }
+      );
+    });
+  <%=endcode%>
+  <p>
+  In order to give access to parent extension data, we have to use 'chrome.extension.*' again.
+  This time we make a request to background, and when we have a response, we just 'alert it'.
+  </p>
+  <p>
+    This is how we retrieve data saved in options page.
+  </p>
+</div>
+
+<div id='release' class='step slide' data-x="1000" data-y="4600">
+  <h1>Release your extension</h1>
+  <p>
+    You could send your extension folder to anyone, and ask them to load it as you exactly do. Another way is to pack your extension as a .crx file.
+  </p>
+  <p>
+  To do that, go to Extension Manager and click <strong>'Pack extension...'</strong>. Find extension folder and leave 'key field' blank. Once done, you'll get a .crx file that is used to install your extension. You'll receive a key file too, which you'll need to make updated versions of your .crx file.
+  </p>
+  <p>
+  For more information about releasing new versions and distributing your extension take a look at:
+  </p>
+  <ul>
+    <li><a href='http://code.google.com/chrome/extensions/packaging.html' target='_blank'>Google Guides: Packaging</a></li>
+    <li><a href='http://code.google.com/chrome/extensions/autoupdate.html' target='_blank'>Google Guides: Autoupdating</a></li>
+    <li><a href='http://code.google.com/chrome/extensions/hosting.html' target='_blank'>Google Guides: Hosting</a></li>
+    <li><a href='http://code.google.com/chrome/extensions/external_extensions.html' target='_blank'>Google Guides: Other deployment options</a></li>
+</div>
+
+<div class="step slide" data-x="2000" data-rotate="90" data-y="4600">
+  <p class='centered'>
+    Thanks for your time!
+  </p>
+  <p class='centered'>
+    <small style="font-size: 20px">By Marc Divins (@mdivins - <a href="http://twitter.com/mdivins" target="_blank">Twitter</a>) (/divins - <a href="http://github.com/divins" target="_blank">GitHub</a>)</small>
+  </p>
+</div>
