@@ -18,12 +18,14 @@
   <h1>Selecting main behaviour</h1>
   <ul>
     <li>
+      <img src='images/creating-basic-chrome-extensions/behaviour_browseraction.jpg' style='float: right'>
       <a href='http://code.google.com/chrome/extensions/browserAction.html' target='_blank'>Browser Action</a>:
       Use it for features that make sense on most pages. In addition to its icon, a browser action can also have a tooltip, a badge, and a popup.
     </li>
     <li>
+      <img src='images/creating-basic-chrome-extensions/behaviour_pageaction.jpg' style='float: right'>
       <a href='http://code.google.com/chrome/extensions/pageAction.html' target='_blank'>Page Actions</a>:
-      Use it for features that make sense for only a few pages. In addition to its icon, a browser action can also have a tooltip and a popup.
+      Use it for features that make sense for only a few pages. In addition to its icon, a page action can also have a tooltip and a popup.
     </li>
     <li>
       <a href='http://code.google.com/chrome/extensions/themes.html' target='_blank'>Themes</a> and <a href='http://code.google.com/chrome/extensions/apps.html' target='_blank'>Apps</a> are not covered in this talk.
@@ -65,7 +67,16 @@
 <div id='basic_example' class='step slide' data-x="1000" data-y="2800">
   <h1>Basic: Codegram troll faces</h1>
   <p>
-    We'll start with a none preset behaviour. Create a folder inside your projects directory and create a file named 'manifest.json':
+    Basic contentscript that will swap Codegram members pics at http://codegram.com with trollfaces.
+  </p>
+  <p>
+    None Browser or Page action will be used so we are talking about none 'preset behaviour'.
+  </p>
+</div>
+
+<div id='basic_example_1' class='step slide' data-x="1000" data-y="2800">
+  <p>
+    Create a folder inside your projects directory and create a file named 'manifest.json':
   </p>
   <%=code 'js'%>
     {
@@ -121,6 +132,7 @@
   </p>
   <%=code 'js'%>
     $(document).ready(function() {
+      // Trollface image must be at 'my_extension/images/trollface.jpg'.
       var trollface = chrome.extension.getURL("images/trollface.jpg");
       $('#content article img').each(function(index, image){
         $(image).attr('src', trollface);
@@ -129,7 +141,6 @@
   <%=endcode%>
   <p>
     Just a little bit of jQuery here, we are getting all Codegram member images and changing the pic with a trollface.
-    Trollface must be at 'my_extension/images/trollface.jpg'.
   </p>
   <p>
   So, as we have no access to other files of the parent extension (except for especified in manifest) we need to take advantage of chrome.extension API (ln 2).
@@ -150,7 +161,25 @@
 
 <div id='page_action_example' class='step slide' data-x="1000" data-y="3400">
   <h1>Page Action: Intercom Messages</h1>
+  <p>
+    Next example will be about Page actions.<br>
+  </p>
+  <p>
+    At Codegram we use <a href='http://intercom.io' target='_blank'>'Intercom.io'</a> as feedback system for our products.<br>
+    There are weeks that some introduced bug or feature makes us send the same answer again and again and there is no "common answers" tool in Intercom.<br>
+  </p>
+  <p>
+    So I build my own extension which loads a json with common answers.
+    This messages are shown in a popup when you click Page action icon, and when you click an especific message, it's inserted into answer input field.
+  </p>
+  <p>
+    This example is not complete, it will just show an alert when messages are clicked and no json is loaded.
+  </p>
+</div>
+
+<div id='page_action_example_1' class='step slide' data-x="1000" data-y="3400">
   <%=code 'js'%>
+    // manifest.json
     {
       "name": "Intercom Common Messages",
       "version": "1.0",
@@ -176,10 +205,13 @@
   First we must make action icon/button appear. Create <strong>'background.js'</strong> and put the following:
   </p>
   <%=code 'js'%>
+    // Add a listener so background knows when a tab has changed.
+    // You need 'tabs' persmission, that's why we added it to manifest file.
     chrome.tabs.onUpdated.addListener(showIntercomAction);
 
     function showIntercomAction(tabId, changeInfo, tab) {
       if (tab.url.indexOf('intercom.io') > -1) {
+        // Show icon for page action in the current tab.
         chrome.pageAction.show(tabId);
       }
     };
@@ -187,10 +219,6 @@
   <p>
     I'm still not sure if it's the best way to do it, but is the only one I could made it work.
   </p>
-  <ul>
-    <li>ln.1 - Add a listener so background knows when a tab has changed. You need 'tabs' persmission, that's why we added it to manifest file.</li>
-    <li>ln.5 - Show icon for page action in the current tab.</li>
-  </ul>
 </div>
 
 <div id='page_action_example_3' class='step slide' data-x="1000" data-y="3400">
