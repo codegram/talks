@@ -265,19 +265,6 @@ em {
   margin-right: 20px;
 }
 
-a.all_slides {
-  display: -moz-inline-box;
-  -moz-box-orient: vertical;
-  display: inline-block;
-  vertical-align: middle;
-  *vertical-align: auto;
-  margin-bottom: 20px;
-  margin-left: 20px;
-}
-a.all_slides {
-  *display: inline;
-}
-
 body #impress .step {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -310,10 +297,23 @@ body #impress .step.active {
   transition-duration: 1s;
 }
 
-#tweet {
+#bottom_bar {
   position: fixed;
   bottom: 10px;
   left: 10px;
+}
+#bottom_bar #tweet, #bottom_bar #all_slides {
+  display: -moz-inline-box;
+  -moz-box-orient: vertical;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+}
+#bottom_bar #tweet, #bottom_bar #all_slides {
+  *display: inline;
+}
+#bottom_bar #all_slides {
+  margin-left: 15px;
 }
 
 nav#navigation {
