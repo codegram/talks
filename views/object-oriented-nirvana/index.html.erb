@@ -1,0 +1,82 @@
+<% @title = "Object Oriented Nirvana"%>
+<%=render partial: 'intro'%>
+
+<div class="step slide" data-x="1000" data-y="800">
+  <h1>Object Oriented Nirvana, WTF?</h1>
+  <ul>
+    <li>Inspired by <a href="http://binstock.blogspot.com/2008/04/perfecting-oos-small-classes-and-short.html">Perfecting OO's Small Classes and Short Methods</a></li>
+    <li>Refactor a library applying the 9 restrictions defined in "Object Calisthenics" essay by Jeff Bay on <a href="http://www.amazon.com/ThoughtWorks-Anthology-Technology-Innovation-Programmers/dp/193435614X?ie=UTF8&s=books&qid=1209017123&sr=8-1">The ThoughtWorks Anthology</a>.</li>
+    <li><a href="https://github.com/codegram/spinach/blob/master/lib/spinach/runner/scenario_runner.rb">Spinach's ScenarioRunner</a> to the rescue!</a>
+  </ul>
+</div>
+<div class="step slide" data-x="1000" data-y="1200">
+  <h1>1. Use only one level of indentation per method</h1>
+  <p style="text-align: center;"><a target="_blank" href="https://github.com/codegram/spinach/commit/f2f1716679b5a301585e0bf7c834f62e75c3cc5f#diff-0">
+          <img src="http://cl.ly/0q2u0X211L0A2z2i3m1V/Screen%20Shot%202012-02-13%20at%209.19.35%20AM.png" />
+        </a></p>
+</div>
+
+<div class="step slide" data-x="1000" data-y="1800">
+  <h1>2. Don’t use the ‘else’ keyword</h1>
+  <p style="text-align: center;"><a target="_blank" href="https://github.com/codegram/spinach/commit/37084af9f971aaa25f0af5bd2e959f64fc5eb0d3#diff-0">
+          <img src="http://cl.ly/0c1B2G02090j232h3M0X/Screen%20Shot%202012-02-13%20at%209.19.50%20AM.png" />
+        </a></p>
+</div>
+
+<div class="step slide" data-x="1000" data-y="2200">
+  <h1>3. Wrap all primitives and strings</h1>
+  <p style="text-align: center;"><a target="_blank" href="https://github.com/codegram/spinach/commit/9ebbe9720e13403aa294207a84fc5a322b179674#diff-0">
+          <img src="http://cl.ly/0t1L0R121E1j3x162C21/Screen%20Shot%202012-02-13%20at%209.20.20%20AM.png" />
+        </a></p>
+</div>
+
+<div class="step slide" data-x="2000" data-y="0">
+  <h1>4. Use only one dot per line</h1>
+  <p style="text-align: center;"><a target="_blank" href="https://github.com/codegram/spinach/commit/6b6e9117d0974fb0e618c1de363b3e94b7e2c6f4#diff-0">
+          <img src="http://cl.ly/2w0K1q0Q312F0D1m300I/Screen%20Shot%202012-02-13%20at%209.20.38%20AM.png" />
+        </a></p>
+</div>
+
+<div class="step slide" data-x="2000" data-y="600">
+  <h1>5. Don’t abbreviate names</h1>
+  <p style="text-align: center;"><a target="_blank" href="https://github.com/codegram/spinach/commit/93587b5374ec4e887e13a582c002072700703591#diff-0">
+          <img src="http://cl.ly/2Z3S3y0B3j0a0T0Z3F1v/Screen%20Shot%202012-02-13%20at%209.21.43%20AM.png" />
+        </a></p>
+</div>
+
+<div class="step slide" data-x="2000" data-y="1200">
+  <h1>6. Keep entities small</h1>
+  <p style="text-align: center;"><a target="_blank" href="https://github.com/codegram/spinach/commit/0ff0a5493903f196f1775456e30fa148720dfaa5#diff-0">
+          <img src="http://cl.ly/0z2L0c2z0l0z412c0J2d/Screen%20Shot%202012-02-13%20at%209.22.32%20AM.png" />
+        </a></p>
+</div>
+
+<div class="step slide" data-x="2000" data-y="1200">
+  <h1>7. Don’t use any classes with more than two instance variables</h1>
+  <p style="text-align: center;"><a target="_blank" href="https://github.com/codegram/spinach/commit/3cc0f9466e818e479ace648b3d5a481171b56a6a#diff-0">
+          <img src="http://cl.ly/1A0j181P0X142J3A3M10/Screen%20Shot%202012-02-13%20at%209.22.44%20AM.png" />
+        </a></p>
+</div>
+
+<div class="step slide" data-x="2000" data-y="2400">
+  <h1>8. Use first-class collections</h1>
+  <p style="text-align: center;"><a target="_blank" href="https://github.com/codegram/spinach/commit/913db701e9e28966491966fd85365495490034df#diff-0">
+          <img src="http://cl.ly/1a3A192d1X2M0B2U0u15/Screen%20Shot%202012-02-13%20at%209.23.15%20AM.png" />
+        </a></p>
+</div>
+
+<div class="step slide" data-x="2000" data-rotate="90" data-y="3400">
+  <h1>9. Don’t use setters, getters, or properties</h1>
+  <p style="text-align: center;"><img src="http://b.images.memegenerator.net/instances/500x/14505753.jpg" /></p>
+</div>
+
+<div class="step slide" data-x="2000" data-rotate="90" data-y="3400">
+  <h1>Conclusions</h1>
+  <ul>
+    <li>Lots fo fun</li>
+    <li>Integration tests green</li>
+    <li>Unit tests failing: stubed too many things?</li>
+    <li>Some design flaws arised</li>
+    <li>Q&A</li>
+  </ul>
+</div>
