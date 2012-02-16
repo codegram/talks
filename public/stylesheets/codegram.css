@@ -226,6 +226,10 @@ body a:hover {
   text-align: center;
   page-break-after: always;
 }
+#intro img {
+  margin-bottom: 40px;
+  margin-top: 40px;
+}
 #intro h1 {
   margin-top: 50px;
 }
@@ -293,10 +297,23 @@ body #impress .step.active {
   transition-duration: 1s;
 }
 
-#tweet {
+#bottom_bar {
   position: fixed;
   bottom: 10px;
   left: 10px;
+}
+#bottom_bar #tweet, #bottom_bar #all_slides {
+  display: -moz-inline-box;
+  -moz-box-orient: vertical;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+}
+#bottom_bar #tweet, #bottom_bar #all_slides {
+  *display: inline;
+}
+#bottom_bar #all_slides {
+  margin-left: 15px;
 }
 
 nav#navigation {
