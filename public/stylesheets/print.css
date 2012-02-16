@@ -226,6 +226,10 @@ body a:hover {
   text-align: center;
   page-break-after: always;
 }
+#intro img {
+  margin-bottom: 40px;
+  margin-top: 40px;
+}
 #intro h1 {
   margin-top: 50px;
 }
