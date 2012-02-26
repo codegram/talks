@@ -1,0 +1,224 @@
+<% @title = "HTTP Authentication methods: Is you API communication safe enough?"%>
+<%=render partial: 'intro'%>
+
+<div class="step slide">
+  <div class="centered">
+    <h1>Fact: API's are awesome</h1>
+    <img src="/images/http-authentication-methods/dwight.jpg"/>
+  </div>
+  <ul>
+    <li><strong>Split</strong> your app's responsibilities into multiple components</li>
+    <li><strong>Escalate</strong> easily and fast</li>
+    <li><strong>End-users</strong> can <strong>talk to your app programmatically</strong></li>
+      <li>[...] hope <a href="http://twitter.com/oriolgual">@oriolgual</a> is gonna tell us more about this someday :)</li>
+  </ul>
+</div>
+
+<div class="step slide">
+  <div class="centered">
+    <h1>Question: How to intercommunicate your components?</h1>
+    <img src="/images/http-authentication-methods/dwight-question.jpg" height="320"/>
+    <h2>Use an authentication mechanism</h2>
+  </div>
+</div>
+
+<div class="step slide">
+  <h1>Round 1: HTTP's basic access authentication</h1>
+  <ol>
+    <li><strong>Client</strong> asks <code>GET /secret</code></li>
+    <li><strong>Server</strong>: <em>401</em> <code>WWW-Authenticate: Basic realm="Codegram"</code></li>
+    <li><strong>Client</strong> sends credendials: <br/>
+        <code>
+        Client: basic-credentials = "Basic" SP basic-cookie
+                basic-cookie      = base64encode(username+":"+password)
+        </code>
+      </li>
+      <li><strong>Server</strong> returns <em>200 OK</em> with the document</li>
+  </ol>
+</div>
+
+<div class="step slide">
+  <p class="wrong">Wrong!</p>
+  <ul>
+    <li>Attacker can obtain <strong>user's plain text password</strong></li>
+    <li><strong>Replay</strong>: If intercepted, requests can be reproduced on the future</li>
+    <li><strong>Reflection attack</strong>: Attacker could fake server, get authorization, and fake client</li>
+    <li><strong>Man-in-the-middle</strong>: Attacker could fake identity and modify requests</li>
+  </ul>
+</div>
+
+<div class="step slide">
+  <h1>Round 2: Use an API token in the header</h1>
+  <ol>
+    <li><strong>Client</strong> asks <code>GET /secret</code></li>
+    <li><strong>Server</strong>: <em>401</em> <code>WWW-Authenticate: Basic realm="Codegram"</code></li>
+    <li><strong>Client</strong> sends credendials: <br/>
+        <code>
+          X-AuthToken = "secret_long_string"
+        </code>
+      </li>
+      <li><strong>Server</strong> returns <em>200 OK</em> with the document</li>
+    </ol>
+</div>
+
+<div class="step slide">
+  <p class="wrong">Still Wrong!</p>
+  <ul>
+    <li><strike>Attacker can obtain <strong>user's plain text password</strong></strike> - still has access to the token</li>
+    <li><strong>Replay</strong>: If intercepted, requests can be reproduced on the future</li>
+    <li><strong>Reflection attack</strong>: Attacker could fake server, get authorization, and fake client</li>
+    <li><strong>Man-in-the-middle</strong>: Attacker could fake identity and modify requests</li>
+  </ul>
+</div>
+
+<div class="step slide">
+  <h1>Round 3: Combined with SSL</h1>
+  <p style="font-size: 1.1em">
+    <strong>Hypothesis:</strong> If the channel can be trusted, then the underlying
+    authentication mechanism shouldn't be something to worry about.
+  </p>
+  <div class='centered'>
+    <img src="/images/http-authentication-methods/i-see-what-you-did-there.png"/>
+  </div>
+</div>
+
+<div class="step slide">
+  <p class="wrong">Wronger!</p>
+  <ul>
+    <li>SSL <strong>Handshake is expensive</strong></li>
+    <li>SSL communication has a <strong>performance hit</strong> (cyphering/decyphering)</li>
+    <li>Bloated: <strong>Certifications</strong></li>
+    <li>We just <strong>lost HTTP shared cache</strong> and probably client-side cache</li>
+  </ul>
+</div>
+
+<div class="step slide centered">
+  <h1>ZOMG so WAT?</h1>
+  <div class='centered'>
+    <img src="/images/http-authentication-methods/home-alone.jpg" height="450"/>
+  </div>
+</div>
+
+<div class="step slide">
+  <h1>HTTP Digest access authentication</h1>
+  <ol>
+    <li><strong>Client</strong>: <em>GET /secret</em> </li>
+    <li><strong>Server</strong> <em>401</em>. sends:</li>
+      <ul>
+        <li><strong>realm</strong>: Authentication domain (codegram)</li>
+        <li><strong>nonce</strong> (unique random value)</li>
+      </ul>
+    </li>
+    <li><strong>Client</strong> request:<br/>
+      <ul>
+        <li><strong>HA1</strong>    = MD5(A1) = MD5(username:realm:password)</li>
+        <li><strong>HA2</strong>    = MD5(A2) = MD5(method:URI)</li>
+        <li>returns: <em>MD5(HA1:nonce:HA2)</em>, <em>realm</em>
+        </li>
+      </ul>
+    </li>
+  </ol>
+</div>
+
+<div class="step slide">
+  <ol start="4">
+    <li><strong>Server</strong> can reproduce the same operations on its side.<br/>
+    <code>
+      <br/>
+      HTTP/1.0 200 OK<br/>
+      next-nonce = "another nonce"
+      <br/>
+    </code>
+    <br/>Then, <strong>discards</strong> the <em>nonce</em>
+    </li>
+  </ol>
+  <div class='centered'>
+    <img src="/images/http-authentication-methods/better-than-expected.jpg" height="340"/>
+  </div>
+</div>
+
+<div class="step slide">
+  <p class="good">Good!</p>
+  <ul>
+    <li><strike>Attacker can obtain <strong>user's plain text password</strong></strike></li>
+    <li><strike><strong>Replay</strong>: If intercepted, requests can be reproduced on the future</strike></li>
+    <li><strike><strong>Reflection attack</strong>: Attacker could fake server, get authorization, and fake client</strike></li>
+    <li><strong>Man-in-the-middle</strong>: Attacker could fake identity and modify requests</li>
+  </ul>
+  <p>Downsides</p>
+  <ul>
+    <li>Client cannot pipeline requests</li>
+  </ul>
+</div>
+
+<div class="step slide">
+  <h2>Extended version (qop)</h2>
+  <p>Client adds these fields:</p>
+  <ul>
+    <li><strong>nc</strong>     = request counter (000001, 000002...)</li>
+    <li><strong>cnonce</strong> = Random value</li>
+  </ul>
+  <p>Those are added in the response hash: <em>MD5(HA1:nonce:cnonce:rc:HA2)</em>, <em>nc</em>, <em>cnonce</em></p>
+  <p>With <code>qop-value = auth-int</code> it also includes a hash of the request body.
+</div>
+
+<div class="step slide">
+  <h2>Notes</h2>
+  <ul>
+    <li>
+    <strong>Subsequent requests</strong> can use the same <em>nonce</em> but must increment <em>nc</em> (nonce count)</li>
+    <li>
+    The server <strong>must keep track</strong> of the number of uses of a <em>nonce</em>.
+    </li>
+  </ul>
+</div>
+
+<div class="step slide">
+  <p class="good">Awesome!</p>
+  <ul>
+    <li><strike>Attacker can obtain <strong>user's plain text password</strong></strike></li>
+    <li><strike><strong>Replay</strong>: If intercepted, requests can be reproduced on the future</strike></li>
+    <li><strike><strong>Reflection attack</strong>: Attacker could fake server, get authorization, and fake client</strike></li>
+    <li><strike><strong>Man-in-the-middle</strong>: Attacker could fake identity and modify requests</strike></li>
+    <li><strong>Bonus</strong>: Safe from <strong>cryptoanalysis</strong></li>
+  </ul>
+  <p>Downsides</p>
+  <ul>
+    <li><strike>Client cannot pipeline requests</strike></li>
+  </ul>
+</div>
+
+<div class="step slide">
+  <h1 class='centered'>THE END</h1>
+  <img style="float: left; width: 350px; margin-right: 80px" src="/images/http-authentication-methods/i-dont-always-authenticate-requests.jpg"/>
+  <h2>Further reading:</h2>
+  <ul>
+    <li>
+      Read the
+      <a href="http://tools.ietf.org/html/rfc2617" />RFC2617 (Basic and Digest Access authentication)</a>
+    </li>
+    <li>
+      Read the
+      <a href="http://tools.ietf.org/html/rfc2617" />RFC2617</a> again, bro
+    </li>
+    <li>Check out <a href="http://api.rubyonrails.org/files/actionpack/lib/action_controller/metal/http_authentication_rb.html">Rails' built-in authentication mechanisms</a></li>
+    <li><a href="http://blog.theamazingrando.com/your-web-service-might-not-be-restful-if">Your web server might not be RESTful if...</a> from Rando's random ramblings</li>
+  </ul>
+</div>
+
+<style type="text/css">
+  .wrong, .good{
+    text-align: center;
+    font-size: 3em;
+    text-transform: uppercase;
+  }
+  .wrong{
+    color: #D60202;
+  }
+  .good{
+    color: #00B50F;
+  }
+  strike{
+    color: #777;
+  }
+</style>
