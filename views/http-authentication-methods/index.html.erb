@@ -7,8 +7,8 @@
     <img src="/images/http-authentication-methods/dwight.jpg"/>
   </div>
   <ul>
-    <li><strong>Split</strong> your app's responsibilities into multiple components</li>
-    <li><strong>Escalate</strong> easily and fast</li>
+    <li><strong>Split</strong> responsibilities</li>
+    <li><strong>Escalate</strong></li>
     <li><strong>End-users</strong> can <strong>talk to your app programmatically</strong></li>
       <li>[...] hope <a href="http://twitter.com/oriolgual">@oriolgual</a> is gonna tell us more about this someday :)</li>
   </ul>
@@ -37,7 +37,7 @@
   </ol>
 </div>
 
-<div class="step slide">
+<div class="step slide" data-y="100">
   <p class="wrong">Wrong!</p>
   <ul>
     <li>Attacker can obtain <strong>user's plain text password</strong></li>
@@ -48,7 +48,7 @@
   </ul>
 </div>
 
-<div class="step slide">
+<div class="step slide" data-scale="2">
   <h1>Round 2: Use an API token in the header</h1>
   <ol>
     <li><strong>Client</strong> asks <code>GET /secret</code></li>
@@ -62,7 +62,7 @@
     </ol>
 </div>
 
-<div class="step slide">
+<div class="step slide" data-scale="2" data-y="100">
   <p class="wrong">Still Wrong!</p>
   <ul>
     <li><strike>Attacker can obtain <strong>user's plain text password</strong></strike> - still has access to the token</li>
@@ -94,7 +94,7 @@
   </ul>
 </div>
 
-<div class="step slide centered">
+<div class="step slide centered" data-rotate-y="360">
   <h1>ZOMG so WAT?</h1>
   <div class='centered'>
     <img src="/images/http-authentication-methods/home-alone.jpg" height="450"/>
@@ -205,8 +205,9 @@
       Read the
       <a href="http://tools.ietf.org/html/rfc2617" />RFC2617</a> again, bro
     </li>
-    <li>Check out <a href="http://api.rubyonrails.org/files/actionpack/lib/action_controller/metal/http_authentication_rb.html">Rails' built-in authentication mechanisms</a></li>
-    <li><a href="http://blog.theamazingrando.com/your-web-service-might-not-be-restful-if">Your web server might not be RESTful if...</a> from Rando's random ramblings</li>
+    <li>For servers: <a href="http://api.rubyonrails.org/files/actionpack/lib/action_controller/metal/http_authentication_rb.html">Rails' built-in authentication mechanisms</a></li>
+    <li>For clients: <a href="https://github.com/jnunemaker/httparty/blob/master/lib/httparty/net_digest_auth.rb">HTTParty can use digest authentication</a></li>
+    <li><a href="http://blog.theamazingrando.com/your-web-service-might-not-be-restful-if">Your web server might not be RESTful if...</a></li>
   </ul>
 </div>
 

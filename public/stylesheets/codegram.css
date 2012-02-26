@@ -416,6 +416,7 @@ body #impress .slide h1 {
 .step-intro + .hint {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
+  display: block;
 }
 
 .hint {
@@ -427,6 +428,7 @@ body #impress .slide h1 {
   color: white;
   font-size: 2em;
   text-align: center;
+  display: none;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
   opacity: 0;
   -moz-transition-property: opacity;
