@@ -1,0 +1,82 @@
+<% @title = "Encrypting messages for a noise-less channel"%>
+<%=render partial: 'intro'%>
+
+<div class='step slide' data-x="1000">
+  <h1>Noise-less channels: HOAX!</h1>
+  <p style='float:right'>
+    <img src="/images/encrypt-for-noiseless-channels/noiseless-channel.png" />
+  </p>
+  <ul class='left'>
+    <li>A communications channel in which the effects of random influences are negligible -> no random error</li>
+    <li>The receiver gets the message from the source without any noise</li>
+    <li>They don't exist in the real world (there's always some random error)</li>
+  </ul>
+  <p class='centered' style='font-weight: bold'>PROFIT!</p>
+  <p class='centered'>But the souce can't send the message as is, so...</p>
+</div>
+
+<div class='step slide' data-scale="2" data-x="1000">
+  <p class='centered'>
+    <img src="/images/encrypt-for-noiseless-channels/encrypt-all-our-messages.jpg" />
+  </p>
+  <h2 class='centered'>Objective: encrypt <br />ALL our messages!<h2>
+</div>
+
+<div class='step slide' data-x="1000">
+  <h1 class='centered'>The elements for an encryption</h1>
+  <h2>What we need</h2>
+  <ul class='left'>
+    <li>The channel's alphabet -> <code>A = {0,1}</code></li>
+    <li>Our message(s) -> <code>S = {a1, a2... an}</code></li>
+    <li>Our messages' probability distribution -> <code>P = {p1... pn}</code>, where <code>pi = P(ai)</code></li>
+  </ul>
+  <h2>What we get</h2>
+  <ul class='left'>
+    <li>Our code -> <code>C = {c1... cn}</code>, where <code>ci = encryption(ai, A)<code></li>
+  </ul>
+</div>
+
+<div class='step slide' data-x="1000" data-scale="10">
+  <h1 class='centered' style='margin-top: 250px'>The Huffman method for a binary alphabet</h1>
+</div>
+
+<div class="step slide">
+  <h1>Huffman method: properties</h1>
+  <ul>
+    <li><strong>Unique codification:</strong> there's no possibility of confusion when decrypting</li>
+    <li>There's no error control</li>
+    <li>The more probable the message, the shortest the encrypted message</li>
+  </ul>
+</div>
+
+<div class='step slide' data-x="1000">
+  <ol>
+    <li>Sort our message by its probability distribution (from higher to lower)</li>
+    <li>We group the two less probable messages:
+      <ol>
+        <li>sum the probabilities</li>
+        <li>give a '1' to the less probable message</li>
+        <li>give a '0' to the most probable message</li>
+      </ol>
+    </li>
+    <li>Go back to the first step</li>
+  </ol>
+  <p style="font-size: 16px; font-style: italic; text-align: center; margin-top: 50px">Note: you can skip the first step, but sorting the messages is easier</p>
+</div>
+
+<div class="step slide">
+  <p class='centered'>
+    <img src="/images/encrypt-for-noiseless-channels/Huffman.png" />
+  </p>
+  <br />
+  <p class="centered">A -> 010, B -> 00, C -> 10, D -> 1110,<br />E -> 011, F ->1111, G ->110</p>
+</div>
+
+<div class="step slide">
+  <p class='centered'>
+    Thanks for watching!
+  </p>
+  <p class='centered'>
+    <small style="font-size: 20px">By Marc Riera (@mrcasals - <a href="http://twitter.com/mrcasals" target="_blank">Twitter</a>) (/mrcasals - <a href="http://github.com/mrcasals" target="_blank">GitHub</a>)</small>
+  </p></div>
+</div>
