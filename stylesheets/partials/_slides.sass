@@ -23,10 +23,14 @@ body
       +opacity(0)
       +transition(all, 1s)
       visibility: hidden
+      position: relative
+      z-index: -1
       &.active
+        position: relative
         visibility: visible
         +opacity(1)
         +transition(all, 1s)
+        z-index: 99
 
       overflow: hidden
 

@@ -385,9 +385,12 @@ body #impress .step {
   -o-transition-duration: 1s;
   transition-duration: 1s;
   visibility: hidden;
+  position: relative;
+  z-index: -1;
   overflow: hidden;
 }
 body #impress .step.active {
+  position: relative;
   visibility: visible;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
@@ -399,6 +402,7 @@ body #impress .step.active {
   -webkit-transition-duration: 1s;
   -o-transition-duration: 1s;
   transition-duration: 1s;
+  z-index: 99;
 }
 
 body #impress .slide {
