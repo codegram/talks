@@ -125,6 +125,7 @@
 <div class="step slide">
   <ol start="4">
     <li><strong>Server</strong> can reproduce the same operations on its side.<br/>
+    (it can store <em>HA1</em> or MD5(password), etc - depends on the implementation)
     <code>
       <br/>
       HTTP/1.0 200 OK<br/>
@@ -161,7 +162,7 @@
     <li><strong>nc</strong>     = request counter (000001, 000002...)</li>
     <li><strong>cnonce</strong> = Random value</li>
   </ul>
-  <p>Those are added in the response hash: <em>MD5(HA1:nonce:cnonce:rc:HA2)</em>, <em>nc</em>, <em>cnonce</em></p>
+  <p>Those are added in the response hash: <em>MD5(HA1:nonce:cnonce:nc:HA2)</em>, <em>nc</em>, <em>cnonce</em></p>
   <p>With <code>qop-value = auth-int</code> it also includes a hash of the request body.
 </div>
 
