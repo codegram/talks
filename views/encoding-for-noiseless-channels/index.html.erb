@@ -1,4 +1,4 @@
-<% @title = "Encrypting messages for a noise-less channel"%>
+<% @title = "Encoding messages for a noise-less channel"%>
 <%=render partial: 'intro'%>
 
 <div class='step slide' data-x="1000">
@@ -17,13 +17,13 @@
 
 <div class='step slide' data-scale="2" data-x="1000">
   <p class='centered'>
-    <img src="/images/encoding-for-noiseless-channels/encoding-all-our-messages.jpg" />
+    <img src="/images/encoding-for-noiseless-channels/encode-all-our-messages.jpg" />
   </p>
-  <h2 class='centered'>Objective: encrypt <br />ALL our messages!<h2>
+  <h2 class='centered'>Objective: encoding <br />ALL our messages!<h2>
 </div>
 
 <div class='step slide' data-x="1000">
-  <h1 class='centered'>The elements for an encryption</h1>
+  <h1 class='centered'>The elements for a code</h1>
   <h2>What we need</h2>
   <ul class='left'>
     <li>The channel's alphabet -> <code>A = {0,1}</code></li>
@@ -32,7 +32,7 @@
   </ul>
   <h2>What we get</h2>
   <ul class='left'>
-    <li>Our code -> <code>C = {c1... cn}</code>, where <code>ci = encryption(ai, A)<code></li>
+    <li>Our code -> <code>C = {c1... cn}</code>, where <code>ci = encoding(ai, A)<code></li>
   </ul>
 </div>
 
@@ -45,7 +45,7 @@
   <ul>
     <li><strong>Unique codification:</strong> there's no possibility of confusion when decrypting</li>
     <li>There's no error control</li>
-    <li>The more probable the message, the shortest the encrypted message</li>
+    <li>The more probable the message, the shortest the encoded message</li>
   </ul>
 </div>
 
