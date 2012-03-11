@@ -1,0 +1,213 @@
+<% @title = "Brew your own coffee...script"%>
+<%=render partial: 'intro'%>
+
+<div class="step slide">
+  <div class="centered">
+    <h1>CoffeeScript</h1>
+    <img src="/images/brew-your-own-coffeescript/coffeescript.png"/>
+  </div>
+  <ul>
+    <li><strong>Source-to-source</strong> compiler (or <strong>transcompiler</strong>)</li>
+    <li>Ruby-like language that <strong>compiles to JavaScript</strong></li>
+  </ul>
+
+  <div class="left">
+    <h4>CoffeeScript</h4>
+    <%=code 'coffeescript'%>
+      add = (a, b) -> a + b
+      add 1, 2
+    <%=endcode%>
+  </div>
+
+  <div class="right">
+    <h4>JavaScript</h4>
+    <%=code 'js'%>
+      (function() {
+        var add;
+        add = function(a, b) {
+          return a + b;
+        };
+        add(1, 2);
+      }).call(this);
+    <%=endcode%>
+  </div>
+</div>
+
+<div class="step slide">
+  <div class="centered">
+    <h1>Transcompiling: how it works</h1>
+    <img src="/images/brew-your-own-coffeescript/coffeescript-compiler.png"/>
+  </div>
+</div>
+
+<div class="step slide">
+  <h1>Roll our own... RubyScript!</h1>
+  <ul>
+    <li>Compile a <strong>subset of Ruby</strong> to <strong>JavaScript</strong></li>
+    <li>Leverage <strong>Melbourne</strong> (the Rubinius parser)</li>
+    <li>We could do it with any other Ruby parser (<strong>Ripper</strong>, you-name-it...)</li>
+  </ul>
+</div>
+
+<div class="step slide">
+  <div class="centered">
+    <h1>AST representation of a simple program</h1>
+    <%= code 'ruby' %>
+    a = 8
+    a + 42
+    <%= endcode %>
+    <img src="/images/brew-your-own-coffeescript/program.png"/>
+  </div>
+</div>
+
+<div class="step slide">
+  <h1>AST nodes and the Visitor pattern</h1>
+  <ul>
+    <li>Every AST node responds to <code>#visit</code></li>
+    <li>Every node, when called <code>#visit</code> on it with a visitor, calls a method on the visitor</li>
+    <li>Example: FixnumLiteralNode#visit(visitor) will call <code>#fixnum_literal</code> on the visitor</li>
+    <%= code 'ruby' %>
+    class MyVisitor
+      def fixnum_literal(node, parent)
+        puts "Called fixnum literal, value is #{node.value}!"
+      end
+    end
+    fixnum_node = "8".to_ast
+    fixnum_node.visit(visitor)
+    # outputs "Called fixnum literal, value is 8!"
+    <%= endcode %>
+  </ul>
+</div>
+
+<div class="step slide">
+  <div class="centered">
+    <h1>Visiting our AST</h1>
+    <%= code 'ruby' %>
+    class Visitor
+      def initialize; @output = [];      end
+      def emit(code); @output.push code; end
+      def output;     @output.join " ";  end
+
+      def local_variable_assignment(node, parent)
+        emit "var %s = " % node.name
+        node.value.visit self, node # visit the right-hand side
+        emit ";"
+      end
+
+      def local_variable_access(node, parent)
+        emit node.name
+        emit ";"
+      end
+
+      def fixnum_literal(node, parent)
+        emit node.value.to_s
+      end # ... and moar methods
+    <%= endcode %>
+  </div>
+</div>
+
+<div class="step slide">
+  <div class="centered">
+    <h1>Yeah it works!</h1>
+    <%= code 'ruby' %>
+    visitor = Visitor.new
+    ast = %q{
+      a = 8
+      a
+    }.to_ast
+    ast.visit(visitor)
+    puts visitor.output
+    # "var a = 8; a;"
+
+    <%= endcode %>
+  </div>
+  <h3>but...</h3>
+</div>
+
+<div class="step slide">
+  <div class="centered">
+    <img src="/images/brew-your-own-coffeescript/expectations.png"/>
+  </div>
+</div>
+
+<div class="step slide">
+  <h1>Improving our Visitor</h1>
+  <ul>
+    <li>Keeping track of <strong>local variables</strong></li>
+    <li>Adding <strong>proper indentation</strong></li>
+    <li>Wrapping output code in a <strong>closure</strong></li>
+  </ul>
+</div>
+
+<div class="step slide">
+  <div class="centered">
+    <h4>TA-DA!!! RubyScript improved!</h4>
+  </div>
+  <div class="left">
+    <h4>RubyScript</h4>
+    <%= code 'ruby' %>
+      a = 3
+      console.log a * 3
+      sum = ->(a, b) {
+        a + b
+      }
+      b = [1,2,sum]
+
+      c = {
+        hey: /foo/,
+        ho: -> {
+          @hey
+        }
+      }
+    <%= endcode %>
+  </div>
+
+  <div class="right">
+    <h4>JavaScript</h4>
+    <%= code 'js' %>
+    (function() {
+      // Declare local variables
+      var a, sum, b, c;
+
+      a = 3;
+      console.log(a * 3);
+      sum = function(a, b) {
+        return a + b;
+      };
+      b = [1, 2, sum];
+      return c = {
+        hey: /foo/,
+        ho: function() {
+          return this.hey;
+        }
+      };
+    })();
+    <%= endcode %>
+  </div>
+</div>
+
+<div class="step slide" data-x="2000" data-rotate="90" data-y="3400">
+  <h2>That's all folks!</h2>
+  <h3>Get RubyScript while it's still hot!</h3>
+  <h5>~400 LOC</h5>
+  <pre style="font-size: 20px">$ curl http://bit.ly/AsoU9w > rubyscript
+$ chmod +x rubyscript
+$ ./rubyscript my_file.rb > my_file.js</pre>
+  <p>Go check out the code here:</p>
+  <a href="https://gist.github.com/2017173">https://gist.github.com/2017173</a>
+  <hr/>
+  <small style="font-size: 20px">By Txus (@txustice) - <a href="http://twitter.com/txustice" target="_blank">Twitter</a>, <a href="http://github.com/txus" target="_blank">GitHub</a></small>
+</div>
+
+<style type="text/css">
+  .left, .right {
+    width: 49%;
+    text-align: center;
+  }
+  .left {
+    float: left;
+  }
+  .right {
+    float: right;
+  }
+</style>
