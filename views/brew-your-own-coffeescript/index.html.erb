@@ -72,6 +72,7 @@
         puts "Called fixnum literal, value is #{node.value}!"
       end
     end
+    visitor = MyVisitor.new
     fixnum_node = "8".to_ast
     fixnum_node.visit(visitor)
     # outputs "Called fixnum literal, value is 8!"
