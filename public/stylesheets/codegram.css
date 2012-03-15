@@ -71,12 +71,12 @@ body {
 
 @font-face {
   font-family: Klavika;
-  src: url('fonts/klavika-regular-webfont.woff') format('woff');
+  src: url('fonts/KlavikaWebBasicMedium.woff') format('woff');
 }
 
 @font-face {
   font-family: Klavika;
-  src: url('fonts/klavika-medium-webfont.woff') format('woff');
+  src: url('fonts/KlavikaWebBasicRegular.woff') format('woff');
   font-weight: bold;
 }
 
