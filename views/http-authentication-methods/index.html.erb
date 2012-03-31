@@ -94,7 +94,11 @@
   </ul>
 </div>
 
+<<<<<<< HEAD
 <div class="step slide centered" data-rotate-y="360">
+=======
+<div class="step slide centered">
+>>>>>>> 095e8a80a7594d3eda5446345caa514e8733071c
   <h1>ZOMG so WAT?</h1>
   <div class='centered'>
     <img src="/images/http-authentication-methods/home-alone.jpg" height="450"/>
@@ -125,6 +129,10 @@
 <div class="step slide">
   <ol start="4">
     <li><strong>Server</strong> can reproduce the same operations on its side.<br/>
+<<<<<<< HEAD
+=======
+    (it can store <em>HA1</em> or MD5(password), etc - depends on the implementation)
+>>>>>>> 095e8a80a7594d3eda5446345caa514e8733071c
     <code>
       <br/>
       HTTP/1.0 200 OK<br/>
@@ -145,7 +153,11 @@
     <li><strike>Attacker can obtain <strong>user's plain text password</strong></strike></li>
     <li><strike>The server <strong>must know user's password in plain text</strong></strike></li>
     <li><strike><strong>Replay</strong>: If intercepted, requests can be reproduced on the future</strike></li>
+<<<<<<< HEAD
     <li><strike><strong>Reflection attack</strong>: Attacker could fake server, get authorization, and fake client</strike></li>
+=======
+    <li>(partially) <strike><strong>Reflection attack</strong>: Attacker could fake server, get authorization, and fake client</strike></li>
+>>>>>>> 095e8a80a7594d3eda5446345caa514e8733071c
     <li><strong>Man-in-the-middle</strong>: Attacker could fake identity and modify requests</li>
   </ul>
   <p>Downsides</p>
@@ -161,7 +173,11 @@
     <li><strong>nc</strong>     = request counter (000001, 000002...)</li>
     <li><strong>cnonce</strong> = Random value</li>
   </ul>
+<<<<<<< HEAD
   <p>Those are added in the response hash: <em>MD5(HA1:nonce:cnonce:rc:HA2)</em>, <em>nc</em>, <em>cnonce</em></p>
+=======
+  <p>Those are added in the response hash: <em>MD5(HA1:nonce:cnonce:nc:HA2)</em>, <em>nc</em>, <em>cnonce</em></p>
+>>>>>>> 095e8a80a7594d3eda5446345caa514e8733071c
   <p>With <code>qop-value = auth-int</code> it also includes a hash of the request body.
 </div>
 

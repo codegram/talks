@@ -1,0 +1,87 @@
+<% @title = "BDD: Best practices and antipatterns"%>
+<%=render partial: 'intro'%>
+
+<div class="step slide">
+  <div class="centered">
+    <h1>Best practices</h1>
+  </div>
+</div>
+
+<div class="step slide">
+  <h1>Factories and gem helpers</h1>
+  <ul>
+    <li>Use factories instead of clicking around your application to set the state</li>
+    <li>Take advantage of helpers, i.e. devise login_as to login users</li>
+    <li>Clean the database using database_cleaner</li>
+  </ul>
+</div>
+
+<div class="step slide">
+  <h1>Abstraction</h1>
+  <ul>
+    <li>Describe a feature, not edge cases</li>
+    <li>Only BDD the happy path, there are controller/model/view tests for a reason</li>
+  </ul>
+</div>
+
+<div class="step slide" data-y="100">
+  <h1>Better feature files</h1>
+  <ul>
+    <li>Think twice when writing the "As a ... I want to .. so I can ..."</li>
+    <li>Write down any explanation you need as plain text between the header and the scenarios (<a href="https://www.relishapp.com/rspec/rspec-expectations/v/2-8/docs/built-in-matchers/be-within-matcher">see example</a>)</li>
+    <li>Start with expectations instead of setting state or user actions</li>
+    <li>Group feature files by application domain, not actor</li>
+  </ul>
+</div>
+
+<div class="step slide" data-scale="2">
+  <h1>Stop once you've an expectation</h1>
+  <ul>
+    <li>No more user actions (click_link and friends) after a Then</li>
+    <li>Only assert on Then steps</li>
+    <li>Split complicated workflows in different scenarios (i.e. registration + confirmation + profile completion)
+  </ul>
+</div>
+
+<div class="step slide">
+  <div class="centered">
+    <h1>Anti-patterns</h1>
+  </div>
+</div>
+
+<div class="step slide" data-scale="2" data-y="100">
+  <h1>Default files</h1>
+  <ul>
+    <li>Delete web_steps.rb if you haven't already</li>
+    <li>paths.rb is the devil (same goes for selectors.rb)</li>
+  </ul>
+</div>
+
+<div class="step slide">
+  <h1>Cucumber features you should not use</h1>
+  <ul>
+    <li>Scenario Outlines</li>
+    <li>Step params (Given a user named "John Doe")</li>
+    <li>Tables</li>
+  </ul>
+</div>
+
+<div class="step slide">
+  <h1>BDD != integration</h1>
+  <ul>
+    <li>Don't try to emulate BDD with integration tests</a>
+    <li>Steak and family aren't BDD frameworks, FYI</li>
+  </ul>
+</div>
+
+<div class="step slide">
+  <h1>Special mentions</h1>
+  <ul>
+    <li>APIs a.k.a testing JSON</li>
+    <li>Pickle</li>
+  </ul>
+</div>
+
+<div class="step slide">
+  <h1 class='centered'>THE END</h1>
+</div>

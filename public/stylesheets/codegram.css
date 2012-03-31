@@ -71,12 +71,20 @@ body {
 
 @font-face {
   font-family: Klavika;
+<<<<<<< HEAD
   src: url('fonts/KlavikaWebBasicMedium.woff') format('woff');
+=======
+  src: url('fonts/klavika-regular-webfont.woff') format('woff');
+>>>>>>> 095e8a80a7594d3eda5446345caa514e8733071c
 }
 
 @font-face {
   font-family: Klavika;
+<<<<<<< HEAD
   src: url('fonts/KlavikaWebBasicRegular.woff') format('woff');
+=======
+  src: url('fonts/klavika-medium-webfont.woff') format('woff');
+>>>>>>> 095e8a80a7594d3eda5446345caa514e8733071c
   font-weight: bold;
 }
 
@@ -385,9 +393,18 @@ body #impress .step {
   -o-transition-duration: 1s;
   transition-duration: 1s;
   visibility: hidden;
+<<<<<<< HEAD
   overflow: hidden;
 }
 body #impress .step.active {
+=======
+  position: relative;
+  z-index: -1;
+  overflow: hidden;
+}
+body #impress .step.active {
+  position: relative;
+>>>>>>> 095e8a80a7594d3eda5446345caa514e8733071c
   visibility: visible;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
@@ -399,6 +416,10 @@ body #impress .step.active {
   -webkit-transition-duration: 1s;
   -o-transition-duration: 1s;
   transition-duration: 1s;
+<<<<<<< HEAD
+=======
+  z-index: 99;
+>>>>>>> 095e8a80a7594d3eda5446345caa514e8733071c
 }
 
 body #impress .slide {
