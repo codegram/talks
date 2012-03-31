@@ -3,6 +3,8 @@ html
   meta http-equiv="Content-Type" content="text/html;charset=UTF-8"
   head
     title=@title
+    -if @description
+      meta name="Description" content=@description
     link href="http://fonts.googleapis.com/css?family=Open+Sans:regular,bold,italic,italicsemibold|PT+Sans:400,700,400italic,700italic|PT+Serif:400,700,400italic,700italic" rel="stylesheet"
     link rel="shortcut icon" href="http://codegram-web.s3.amazonaws.com/favicon.png"
     ==stylesheet_link_tag 'codegram'
